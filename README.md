@@ -8,8 +8,8 @@ The base library for the JuliaReach ecosystem
 
 [dev-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [dev-url]: http://juliareach.github.io/JuliaReachBase/dev/
-[ci-img]: https://github.com/JuliaReach/JuliaReachBase/actions/workflows/ci_push.yml/badge.svg?branch=master
-[ci-url]: https://github.com/JuliaReach/JuliaReachBase/actions/workflows/ci_push.yml?query=branch%3Amaster
+[ci-img]: https://github.com/JuliaReach/JuliaReachBase/actions/workflows/ci.yml/badge.svg?branch=master
+[ci-url]: https://github.com/JuliaReach/JuliaReachBase/actions/workflows/ci.yml?query=branch%3Amaster
 [cov-img]: http://codecov.io/github/JuliaReach/JuliaReachBase/coverage.svg?branch=master
 [cov-url]: https://codecov.io/github/JuliaReach/JuliaReachBase?branch=master
 [chat-img]: https://badges.gitter.im/JuliaReach/Lobby.svg
