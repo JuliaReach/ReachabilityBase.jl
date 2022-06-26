@@ -1,0 +1,6 @@
+name = "JuliaReachBase"
+uuid = "379f33d0-9447-4353-bd03-d664070e549f"
+version = "0.1.0"
+
+[compat]
+julia = "1.2"
