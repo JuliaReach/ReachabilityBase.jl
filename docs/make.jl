@@ -5,7 +5,7 @@ makedocs(
     format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true",
                              assets = ["assets/aligned.css"]),
     modules = [JuliaReachBase, Assertions, Require, Comparison, Iteration,
-               Commutative, Distribution],
+               Commutative, Distribution, Subtypes],
     pages = [
         "Home" => "index.md",
         "Library" => Any[
@@ -15,6 +15,7 @@ makedocs(
             "Iteration" => "lib/Iteration.md",
             "Commutative" => "lib/Commutative.md",
             "Distribution" => "lib/Distribution.md",
+            "Subtypes" => "lib/Subtypes.md",
         ],
         "About" => "about.md"
     ],

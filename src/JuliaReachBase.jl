@@ -6,5 +6,6 @@ include("Comparison/Comparison.jl")
 include("Iteration/Iteration.jl")
 include("Commutative/Commutative.jl")
 include("Distribution/Distribution.jl")
+include("Subtypes/Subtypes.jl")
 
 end  # module
