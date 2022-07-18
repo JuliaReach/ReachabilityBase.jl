@@ -1,11 +1,16 @@
 using Documenter, JuliaReachBase
 
+DocMeta.setdocmeta!(JuliaReachBase, :DocTestSetup, :(using JuliaReachBase); recursive=true)
+
 makedocs(
     sitename = "JuliaReachBase.jl",
     format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true",
                              assets = ["assets/aligned.css"]),
-    modules = [JuliaReachBase, Assertions, Require, Comparison, Iteration,
-               Commutative, Distribution, Subtypes, Arrays],
+    modules = [JuliaReachBase, JuliaReachBase.Assertions,
+               JuliaReachBase.Require, JuliaReachBase.Comparison,
+               JuliaReachBase.Iteration, JuliaReachBase.Commutative,
+               JuliaReachBase.Distribution, JuliaReachBase.Subtypes,
+               JuliaReachBase.Arrays],
     pages = [
         "Home" => "index.md",
         "Library" => Any[
@@ -20,7 +25,7 @@ makedocs(
         ],
         "About" => "about.md"
     ],
-    doctest = true,
+    doctest = false,
     strict = true
 )
 

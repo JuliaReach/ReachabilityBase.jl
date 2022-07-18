@@ -231,7 +231,7 @@ A sparse matrix that corresponds to the projection onto the variables in `block`
 
 ### Examples
 
-```jldoctest projection_matrix
+```jldoctest; setup = :(using JuliaReachBase.Arrays)
 julia> projection_matrix([1, 3], 4)
 2×4 SparseArrays.SparseMatrixCSC{Float64, Int64} with 2 stored entries:
  1.0   ⋅    ⋅    ⋅

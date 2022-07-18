@@ -61,7 +61,7 @@ of the `i`-th component of `x`.
 
 ### Notes
 
-See also [`Base.rationalize`](@ref).
+See also `Base.rationalize`.
 """
 function _rationalize(::Type{T}, x::AbstractVecOrMat{N}, tol::Real) where {T<:Integer, N<:AbstractFloat}
     return rationalize.(Ref(T), x, Ref(tol))
