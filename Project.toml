@@ -2,5 +2,8 @@ name = "JuliaReachBase"
 uuid = "379f33d0-9447-4353-bd03-d664070e549f"
 version = "0.1.0"
 
+[deps]
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
 [compat]
 julia = "1.2"

@@ -1,3 +1,3 @@
 using JuliaReachBase, Test
 
-@test true
+@time @testset "Comparison" begin include("Comparison/comparison.jl") end
