@@ -1,6 +1,8 @@
 using JuliaReachBase, Test
 using LinearAlgebra, SparseArrays
-using Random: GLOBAL_RNG
+using Random: GLOBAL_RNG, seed!
+
+seed!(1234)  # fix RNG seed for reproducibility
 
 @time @testset "Comparison" begin include("Comparison/comparison.jl") end
 @time @testset "Iteration" begin include("Iteration/StrictlyIncreasingIndices.jl") end
