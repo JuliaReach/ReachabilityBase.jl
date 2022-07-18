@@ -4,8 +4,12 @@ makedocs(
     sitename = "JuliaReachBase.jl",
     format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true",
                              assets = ["assets/aligned.css"]),
+    modules = [JuliaReachBase, Assertions],
     pages = [
         "Home" => "index.md",
+        "Library" => Any[
+            "Assertions" => "lib/Assertions.md",
+        ],
         "About" => "about.md"
     ],
     doctest = true,
