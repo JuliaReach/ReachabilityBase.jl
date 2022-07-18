@@ -10,5 +10,7 @@ seed!(1234)  # fix RNG seed for reproducibility
 @time @testset "Arrays.array_operations" begin include("Arrays/array_operations.jl") end
 @time @testset "Arrays.arrays" begin include("Arrays/arrays.jl") end
 
-using Documenter
-@time @testset "JuliaReachBase.doctests" begin doctest(JuliaReachBase) end
+if VERSION > v"1.6"
+    using Documenter
+    @time @testset "JuliaReachBase.doctests" begin doctest(JuliaReachBase) end
+end
