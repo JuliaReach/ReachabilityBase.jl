@@ -6,12 +6,6 @@ on:
       - 'LICENSE'
       - 'README.md'
 
-concurrency:
-  # skip intermediate builds: always.
-  # cancel intermediate builds: only if it is a pull request build.
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
-
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
@@ -21,13 +15,16 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.2'
           - '1.7'
-          - 'nightly'
         os:
           - ubuntu-latest
+          - windows-latest
         arch:
           - x64
+        include:
+          - version: '1.2'  # test on oldest supported version
+            arch: x64
+            os: ubuntu-latest
     env:
       JULIA_PKG_SERVER: ''
     steps:
