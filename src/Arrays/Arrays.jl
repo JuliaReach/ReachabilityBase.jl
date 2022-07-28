@@ -13,6 +13,8 @@ activate_assertions(Arrays)  # activate assertions by default
 
 using JuliaReachBase.Comparison: _geq, isapproxzero, _isapprox, _in
 
+import Base: rationalize
+
 export _above,
        _abs_sum,
        _At_ldiv_B,
@@ -20,7 +22,6 @@ export _above,
        _dr,
        _isupwards,
        _matrix_type,
-       _rationalize,
        _similar_type,
        _up,
        _vector_type,
@@ -45,6 +46,7 @@ export _above,
        prepend_zeros,
        projection_matrix,
        rank,
+       rationalize,
        rectify,
        remove_duplicates_sorted!,
        remove_zero_columns,

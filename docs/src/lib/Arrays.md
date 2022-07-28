@@ -16,7 +16,6 @@ Arrays
 _above
 _dr
 _matrix_type
-_rationalize
 _up
 _vector_type
 allequal
@@ -35,6 +34,7 @@ issquare
 nonzero_columns
 nonzero_indices
 projection_matrix
+rationalize
 rectify
 remove_duplicates_sorted!
 remove_zero_columns
