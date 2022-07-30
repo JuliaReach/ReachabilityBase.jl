@@ -2,10 +2,10 @@
 const DEFAULT_COND_TOL = 1e6
 
 # matrix-matrix multiplication
-@inline _At_mul_B(A, B) = transpose(A) * B
+@inline At_mul_B(A, B) = transpose(A) * B
 
 # matrix-matrix division
-@inline _At_ldiv_B(A, B) = transpose(A) \ B
+@inline At_ldiv_B(A, B) = transpose(A) \ B
 
 # rank of sparse submatrix (see #1497)
 rank(M::SubArray{N, 2, <:SparseMatrixCSC}) where {N} = rank(sparse(M))

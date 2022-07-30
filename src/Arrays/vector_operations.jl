@@ -198,7 +198,7 @@ function is_cyclic_permutation(candidate::AbstractVector,
 end
 
 """
-    _up(u::AbstractVector, v::AbstractVector)
+    similar_direction(u::AbstractVector, v::AbstractVector)
 
 Checks if the given vector is pointing towards the given direction.
 
@@ -211,31 +211,12 @@ Checks if the given vector is pointing towards the given direction.
 
 A boolean indicating if the vector is pointing towards the direction.
 """
-@inline function _up(u::AbstractVector, v::AbstractVector)
+@inline function similar_direction(u::AbstractVector, v::AbstractVector)
     dot(u, v) > 0
 end
 
 """
-    _dr(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
-
-Returns the direction of the difference of the given vectors.
-
-### Input
-
-- `u` -- direction
-- `Vi` -- first vector
-- `Vj` -- second vector
-
-### Output
-
-A number indicating the direction of the difference of the given vectors.
-"""
-@inline function _dr(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
-    dot(u, (Vi) - (Vj))
-end
-
-"""
-    _above(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
+    isabove(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
 
 Checks if the difference of the given vectors is pointing towards the given
 direction.
@@ -251,8 +232,8 @@ direction.
 A boolean indicating if the difference of the given vectors is pointing
 towards the given direction.
 """
-@inline function _above(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
-    _dr(u, Vi, Vj) > 0
+@inline function isabove(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
+    dot(u, Vi - Vj) > 0
 end
 
 """
@@ -571,6 +552,6 @@ function substitute!(substitution::Dict{Int, T},
     return x
 end
 
-function _isupwards(vec)
+function isupwards(vec)
     return vec[2] > 0 || (vec[2] == 0 && vec[1] > 0)
 end
