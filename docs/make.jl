@@ -1,16 +1,17 @@
-using Documenter, JuliaReachBase
+using Documenter, ReachabilityBase
 
-DocMeta.setdocmeta!(JuliaReachBase, :DocTestSetup, :(using JuliaReachBase); recursive=true)
+DocMeta.setdocmeta!(ReachabilityBase, :DocTestSetup,
+                    :(using ReachabilityBase); recursive=true)
 
 makedocs(
-    sitename = "JuliaReachBase.jl",
+    sitename = "ReachabilityBase.jl",
     format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true",
                              assets = ["assets/aligned.css"]),
-    modules = [JuliaReachBase, JuliaReachBase.Assertions,
-               JuliaReachBase.Require, JuliaReachBase.Comparison,
-               JuliaReachBase.Iteration, JuliaReachBase.Commutative,
-               JuliaReachBase.Distribution, JuliaReachBase.Subtypes,
-               JuliaReachBase.Arrays],
+    modules = [ReachabilityBase, ReachabilityBase.Assertions,
+               ReachabilityBase.Require, ReachabilityBase.Comparison,
+               ReachabilityBase.Iteration, ReachabilityBase.Commutative,
+               ReachabilityBase.Distribution, ReachabilityBase.Subtypes,
+               ReachabilityBase.Arrays],
     pages = [
         "Home" => "index.md",
         "Library" => Any[
@@ -30,6 +31,6 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/JuliaReach/JuliaReachBase.jl.git",
+    repo = "github.com/JuliaReach/ReachabilityBase.jl.git",
     push_preview = true
 )

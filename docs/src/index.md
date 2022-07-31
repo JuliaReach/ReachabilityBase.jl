@@ -1,10 +1,10 @@
-# JuliaReachBase.jl
+# ReachabilityBase.jl
 
 ```@meta
-CurrentModule = JuliaReachBase
+CurrentModule = ReachabilityBase
 ```
 
-[JuliaReachBase.jl](http://github.com/JuliaReach/JuliaReachBase.jl) is a basic
+[ReachabilityBase.jl](http://github.com/JuliaReach/ReachabilityBase.jl) is a basic
 [Julia](http://julialang.org) package.
 
 ```@contents

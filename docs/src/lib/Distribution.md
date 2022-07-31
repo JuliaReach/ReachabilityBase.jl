@@ -8,7 +8,7 @@ Depth = 3
 ```
 
 ```@meta
-CurrentModule = JuliaReachBase.Distribution
+CurrentModule = ReachabilityBase.Distribution
 ```
 
 ```@docs

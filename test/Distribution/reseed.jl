@@ -1,4 +1,4 @@
-using JuliaReachBase.Distribution
+using ReachabilityBase.Distribution
 
 # reseeding with random seed
 rng = GLOBAL_RNG
