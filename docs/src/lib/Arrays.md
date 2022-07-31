@@ -38,7 +38,6 @@ remove_zero_columns
 right_turn
 same_sign
 samedir
-similar_direction
 SingleEntryVector
 substitute
 substitute!
