@@ -1,5 +1,5 @@
 # computes ‖a^T G‖₁
-@inline function _abs_sum(a::AbstractVector, G::AbstractMatrix)
+@inline function abs_sum(a::AbstractVector, G::AbstractMatrix)
    n, p = size(G)
    N = promote_type(eltype(a), eltype(G))
    abs_sum = zero(N)
@@ -14,12 +14,12 @@
 end
 
 # computes ‖a^T G‖₁ for `a` being a sparse vector
-@inline function _abs_sum(a::AbstractSparseVector, G::AbstractMatrix)
+@inline function abs_sum(a::AbstractSparseVector, G::AbstractMatrix)
    return sum(abs, transpose(a) * G)
 end
 
 # computes ‖a^T G‖₁ for `a` having only one nonzero element
-@inline function _abs_sum(a::SingleEntryVector, G::AbstractMatrix)
+@inline function abs_sum(a::SingleEntryVector, G::AbstractMatrix)
    p = size(G, 2)
    i = a.i
    v = abs(a.v)
@@ -54,7 +54,7 @@ function inner(x::AbstractVector{N}, A::AbstractMatrix{N}, y::AbstractVector{N}
 end
 
 """
-    _vector_type(T)
+    vector_type(T)
 
 Return a corresponding vector type with respect to type `T`.
 
@@ -74,10 +74,10 @@ A vector type that corresponds in some sense (see Notes below) to `T`.
   the corresponding type is also a regular vector.
 - Otherwise, the corresponding type is a regular vector.
 """
-function _vector_type end
+function vector_type end
 
 """
-    _matrix_type(T)
+    matrix_type(T)
 
 Return a corresponding matrix type with respect to type `T`.
 
@@ -97,15 +97,15 @@ A matrix type that corresponds in some sense (see Notes below) to `T`.
   the corresponding type is also a regular matrix.
 - Otherwise, the corresponding type is a regular matrix.
 """
-function _matrix_type end
+function matrix_type end
 
-_vector_type(::Type{<:AbstractSparseArray{T}}) where T = SparseVector{T, Int}
-_vector_type(VT::Type{<:AbstractVector{T}}) where T = VT
-_vector_type(::Type{<:AbstractMatrix{T}}) where T = Vector{T}
+vector_type(::Type{<:AbstractSparseArray{T}}) where T = SparseVector{T, Int}
+vector_type(VT::Type{<:AbstractVector{T}}) where T = VT
+vector_type(::Type{<:AbstractMatrix{T}}) where T = Vector{T}
 
-_matrix_type(::Type{<:AbstractVector{T}}) where T = Matrix{T}
-_matrix_type(MT::Type{<:AbstractMatrix{T}}) where T = MT
-_matrix_type(::Type{<:AbstractSparseVector{T}}) where T = SparseMatrixCSC{T, Int}
+matrix_type(::Type{<:AbstractVector{T}}) where T = Matrix{T}
+matrix_type(MT::Type{<:AbstractMatrix{T}}) where T = MT
+matrix_type(::Type{<:AbstractSparseVector{T}}) where T = SparseMatrixCSC{T, Int}
 
 # matrix constructors
 _matrix(m, n, MT::Type{<:AbstractMatrix{T}}) where T = Matrix{T}(undef, m, n)
@@ -114,13 +114,13 @@ _matrix(m, n, MT::Type{<:SparseMatrixCSC{T}}) where T = spzeros(T, m, n)
 """
     to_matrix(vectors::AbstractVector{VN},
               [m]=length(vectors[1]),
-              [MT]=_matrix_type(VN)) where {VN}
+              [MT]=matrix_type(VN)) where {VN}
 
 ### Input
 
 - `vectors` -- list of vectors
 - `m`       -- (optional; default: `length(vectors[1])`) number of rows
-- `MT`      -- (optional; default: `_matrix_type(VN)`) type of target matrix
+- `MT`      -- (optional; default: `matrix_type(VN)`) type of target matrix
 
 ### Output
 
@@ -128,7 +128,7 @@ A matrix with the column vectors from `vectors` in the same order.
 """
 function to_matrix(vectors::AbstractVector{VN},
                    m=length(vectors[1]),
-                   mat_type=_matrix_type(VN)) where {VN}
+                   mat_type=matrix_type(VN)) where {VN}
     n = length(vectors)
     M = _matrix(m, n, mat_type)
     @inbounds for (j, vj) in enumerate(vectors)
@@ -138,12 +138,12 @@ function to_matrix(vectors::AbstractVector{VN},
 end
 
 # no-op
-_similar_type(x::AbstractVector) = typeof(x)
+similar_type(x::AbstractVector) = typeof(x)
 
 function load_copy_finalize_static()
 
 return quote
-    _similar_type(x::StaticArrays.StaticArray) = StaticArrays.similar_type(x)
+    similar_type(x::StaticArrays.StaticArray) = StaticArrays.similar_type(x)
 end # quote
 
 end # end load_copy_finalize_static

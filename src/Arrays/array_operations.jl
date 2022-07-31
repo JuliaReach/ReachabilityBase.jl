@@ -42,7 +42,7 @@ function same_sign(A::AbstractArray{N}; optimistic::Bool=false) where {N}
 end
 
 """
-    _rationalize(::Type{T}, x::AbstractVecOrMat{N}, tol::Real) where {T<:Integer, N<:AbstractFloat}
+    rationalize(::Type{T}, x::AbstractArray{N}, tol::Real) where {T<:Integer, N<:AbstractFloat}
 
 Approximate an array of floating point numbers as a rational vector with entries
 of the given integer type.
@@ -63,20 +63,17 @@ of the `i`-th component of `x`.
 
 See also `Base.rationalize`.
 """
-function _rationalize(::Type{T}, x::AbstractVecOrMat{N}, tol::Real) where {T<:Integer, N<:AbstractFloat}
+function rationalize(::Type{T}, x::AbstractArray{N}, tol::Real) where {T<:Integer, N<:AbstractFloat}
     return rationalize.(Ref(T), x, Ref(tol))
 end
 
 # method extensions
-_rationalize(::Type{T}, x::AbstractVecOrMat{N}; tol::Real=eps(N)) where {T<:Integer, N<:AbstractFloat} =  _rationalize(T, x, tol)
-_rationalize(x::AbstractVecOrMat{N}; kwargs...) where {N<:AbstractFloat} = _rationalize(Int, x; kwargs...)
-
-# fallback for scalars
-_rationalize(::Type{T}, x::AbstractFloat, tol::Real) where {T<:Integer} = rationalize(T, x, tol)
+rationalize(::Type{T}, x::AbstractArray{N}; tol::Real=eps(N)) where {T<:Integer, N<:AbstractFloat} =  rationalize(T, x, tol)
+rationalize(x::AbstractArray{N}; kwargs...) where {N<:AbstractFloat} = rationalize(Int, x; kwargs...)
 
 # nested vectors
-function _rationalize(::Type{T}, x::AbstractVecOrMat{<:AbstractVecOrMat{N}}, tol::Real) where {T<:Integer, N<:AbstractFloat}
-    return _rationalize.(Ref(T), x, Ref(tol))
+function rationalize(::Type{T}, x::AbstractArray{<:AbstractArray{N}}, tol::Real) where {T<:Integer, N<:AbstractFloat}
+    return rationalize.(Ref(T), x, Ref(tol))
 end
 
 """
