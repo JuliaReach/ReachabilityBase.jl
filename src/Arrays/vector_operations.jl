@@ -198,24 +198,6 @@ function is_cyclic_permutation(candidate::AbstractVector,
 end
 
 """
-    similar_direction(u::AbstractVector, v::AbstractVector)
-
-Checks if the given vector is pointing towards the given direction.
-
-### Input
-
-- `u` -- direction
-- `v` -- vector
-
-### Output
-
-A boolean indicating if the vector is pointing towards the direction.
-"""
-@inline function similar_direction(u::AbstractVector, v::AbstractVector)
-    dot(u, v) > 0
-end
-
-"""
     isabove(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
 
 Checks if the difference of the given vectors is pointing towards the given
