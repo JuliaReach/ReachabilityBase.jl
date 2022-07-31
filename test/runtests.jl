@@ -1,4 +1,4 @@
-using JuliaReachBase, Test
+using ReachabilityBase, Test
 using LinearAlgebra, SparseArrays
 using Random: GLOBAL_RNG, seed!
 
@@ -12,5 +12,5 @@ seed!(1234)  # fix RNG seed for reproducibility
 
 if VERSION > v"1.6"
     using Documenter
-    @time @testset "JuliaReachBase.doctests" begin doctest(JuliaReachBase) end
+    @time @testset "ReachabilityBase.doctests" begin doctest(ReachabilityBase) end
 end

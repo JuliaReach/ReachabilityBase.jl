@@ -12,7 +12,7 @@ Pages = ["about.md"]
 If you like this package, consider contributing!
 
 [Creating an issue](https://help.github.com/en/articles/creating-an-issue) in the
-[JuliaReachBase GitHub issue tracker](https://github.com/JuliaReach/JuliaReachBase.jl/issues)
+[ReachabilityBase GitHub issue tracker](https://github.com/JuliaReach/ReachabilityBase.jl/issues)
 to report a bug, open a discussion about existing functionality, or suggesting
 new functionality is appreciated.
 
@@ -21,7 +21,7 @@ library, you can [fork](https://help.github.com/en/articles/fork-a-repo) the
 repository and send a pull request (see below). Typical contributions include
 fixing a bug, adding a new feature or improving the documentation (either in
 source code or the
-[online manual](https://juliareach.github.io/JuliaReachBase.jl/latest/man/getting_started/)).
+[online manual](https://juliareach.github.io/ReachabilityBase.jl/latest/man/getting_started/)).
 
 You are also welcome to get in touch with us in the
 [JuliaReach Gitter chat](https://gitter.im/JuliaReach/Lobby).
@@ -61,7 +61,7 @@ Alternatively, you can achieve the same from inside the REPL using the following
 command:
 
 ```julia
-julia> Pkg.test("JuliaReachBase")
+julia> Pkg.test("ReachabilityBase")
 ```
 
 We also advise adding new unit tests when adding new features to ensure
@@ -91,7 +91,7 @@ $ julia --color=yes docs/make.jl
 
 ## Credits
 
-Here we list the names of the maintainers of the `JuliaReachBase.jl` library
+Here we list the names of the maintainers of the `ReachabilityBase.jl` library
 (in alphabetic order).
 
 ### Core developers

@@ -1,4 +1,4 @@
-module JuliaReachBase
+module ReachabilityBase
 
 include("Assertions/Assertions.jl")
 include("Require/Require.jl")

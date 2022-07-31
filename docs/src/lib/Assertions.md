@@ -8,7 +8,7 @@ Depth = 3
 ```
 
 ```@meta
-CurrentModule = JuliaReachBase.Assertions
+CurrentModule = ReachabilityBase.Assertions
 ```
 
 ```@docs

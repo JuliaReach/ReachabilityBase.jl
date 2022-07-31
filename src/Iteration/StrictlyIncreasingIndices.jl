@@ -19,7 +19,7 @@ first.
 
 ### Examples
 
-```jldoctest; setup = :(using JuliaReachBase.Iteration)
+```jldoctest; setup = :(using ReachabilityBase.Iteration)
 julia> for v in StrictlyIncreasingIndices(4, 2)
            println(v)
        end

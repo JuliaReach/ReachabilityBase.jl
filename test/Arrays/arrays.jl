@@ -1,4 +1,4 @@
-using JuliaReachBase.Arrays
+using ReachabilityBase.Arrays
 
 for _dummy_ in 1:1 # avoid global variable warnings
     # square matrix

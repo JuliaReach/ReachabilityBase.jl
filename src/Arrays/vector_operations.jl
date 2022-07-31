@@ -62,7 +62,7 @@ such that `u = k * v`, and `(false, 0)` otherwise.
 
 ### Examples
 
-```jldoctest; setup = :(using JuliaReachBase.Arrays)
+```jldoctest; setup = :(using ReachabilityBase.Arrays)
 julia> samedir([1, 2, 3], [2, 4, 6])
 (true, 0.5)
 
@@ -96,7 +96,7 @@ that `u = k * v`, and `(false, 0)` otherwise.
 
 ### Examples
 
-```jldoctest; setup = :(using JuliaReachBase.Arrays)
+```jldoctest; setup = :(using ReachabilityBase.Arrays)
 julia> ismultiple([1, 2, 3], [2, 4, 6])
 (true, 0.5)
 
@@ -441,7 +441,7 @@ Check that two vectors contain the same elements up to reordering.
 
 ### Examples
 
-```jldoctest; setup = :(using JuliaReachBase.Arrays)
+```jldoctest; setup = :(using ReachabilityBase.Arrays)
 julia> ispermutation([1, 2, 2], [2, 2, 1])
 true
 

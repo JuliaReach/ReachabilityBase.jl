@@ -8,10 +8,10 @@ module Arrays
 using LinearAlgebra, Requires, SparseArrays
 import LinearAlgebra: rank
 
-using JuliaReachBase.Assertions: @assert, activate_assertions
+using ReachabilityBase.Assertions: @assert, activate_assertions
 activate_assertions(Arrays)  # activate assertions by default
 
-using JuliaReachBase.Comparison: _geq, isapproxzero, _isapprox, _in
+using ReachabilityBase.Comparison: _geq, isapproxzero, _isapprox, _in
 
 import Base: rationalize
 

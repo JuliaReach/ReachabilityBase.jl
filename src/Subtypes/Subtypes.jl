@@ -31,7 +31,7 @@ Consider the `Integer` type. If we pass `concrete = false`, the implementation
 imitates `Base.subtypes` without any arguments.
 
 ```jldoctest subtypes
-julia> using JuliaReachBase.Subtypes
+julia> using ReachabilityBase.Subtypes
 
 julia> subtypes(Integer, false)
 3-element Vector{Any}:
