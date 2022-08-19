@@ -18,6 +18,7 @@ import Base: rationalize
 export abs_sum,
        allequal,
        append_zeros,
+       argmaxabs,
        At_ldiv_B,
        At_mul_B,
        cross_product,
