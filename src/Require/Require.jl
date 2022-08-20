@@ -9,14 +9,15 @@ module Require
 export require
 
 """
-    require(mod, packages; [fun_name]::String="", [explanation]::String="")
+    require([mod]=Main, packages; [fun_name]::String="", [explanation]::String="")
 
 Check for one or more optional packages and print an error message if any of
 them is not loaded.
 
 ### Input
 
-- `mod`         -- module where the package should be loaded
+- `mod`         -- (optional; default: `Main`) module where the package should
+                   be loaded
 - `packages`    -- symbol or list of symbols (the package name(s))
 - `fun_name`    -- (optional; default: `""`) name of the function that requires
                    the package
@@ -34,6 +35,11 @@ This function uses `@assert` and hence loses its ability to print an error
 message if assertions are deactivated (see the `Assertions` module).
 """
 function require end
+
+# default: use Main module
+function require(package; fun_name::String="", explanation::String="")
+    require(Main, package; fun_name=fun_name, explanation=explanation)
+end
 
 # version for one package
 function require(mod, package::Symbol; fun_name::String="",
