@@ -9,6 +9,12 @@ for N in [Float64, Float32, Rational{Int}]
     v1p = prepend_zeros(v1, 2)
     @test v1a == append_zeros(v2, 2) == append_zeros(v3, 2) == N[0, 4, 0, 0, 0]
     @test v1p == prepend_zeros(v2, 2) == prepend_zeros(v3, 2) == N[0, 0, 0, 4, 0]
+
+    # argmaxabs
+    @test_throws AssertionError argmaxabs(N[])
+    @test argmaxabs(N[-4, -2, 3]) == 1
+    @test argmaxabs(N[-4, 5, 3]) == 2
+    @test argmaxabs(N[1, -2, 3]) == 3
 end
 
 for N in [Float32, Float64]

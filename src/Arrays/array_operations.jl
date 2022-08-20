@@ -92,3 +92,30 @@ A copy of the array where each negative entry is replaced by zero.
 function rectify(x::AbstractArray{N}) where {N<:Real}
     return map(xi -> max(xi, zero(N)), x)
 end
+
+"""
+    argmaxabs(x::AbstractArray)
+
+Return the index with the absolute-wise maximum entry.
+
+### Input
+
+- `x` -- array
+
+### Output
+
+The index `i` such that `|x[i]| >= |x[j]|` for all `j`.
+"""
+function argmaxabs(x::AbstractArray)
+    @assert length(x) > 0 "cannot find the absolute argmax in an empty array"
+    res = zero(eltype(x))
+    idx = 1
+    @inbounds for i in eachindex(x)
+        v = abs(x[i])
+        if v > res
+            res = v
+            idx = i
+        end
+    end
+    return idx
+end
