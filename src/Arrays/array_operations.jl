@@ -107,9 +107,10 @@ Return the index with the absolute-wise maximum entry.
 The index `i` such that `|x[i]| >= |x[j]|` for all `j`.
 """
 function argmaxabs(x::AbstractArray)
-    res = abs(first(x))
+    @assert length(x) > 0 "cannot find the absolute argmax in an empty array"
+    res = zero(eltype(x))
     idx = 1
-    @inbounds for i in 2:length(x)
+    @inbounds for i in eachindex(x)
         v = abs(x[i])
         if v > res
             res = v
