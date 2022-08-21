@@ -8,5 +8,6 @@ include("Commutative/Commutative.jl")
 include("Distribution/Distribution.jl")
 include("Subtypes/Subtypes.jl")
 include("Arrays/Arrays.jl")
+include("Timing/Timing.jl")
 
 end  # module

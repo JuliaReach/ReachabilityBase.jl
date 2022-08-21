@@ -11,7 +11,7 @@ makedocs(
                ReachabilityBase.Require, ReachabilityBase.Comparison,
                ReachabilityBase.Iteration, ReachabilityBase.Commutative,
                ReachabilityBase.Distribution, ReachabilityBase.Subtypes,
-               ReachabilityBase.Arrays],
+               ReachabilityBase.Arrays, ReachabilityBase.Timing],
     pages = [
         "Home" => "index.md",
         "Library" => Any[
@@ -23,6 +23,7 @@ makedocs(
             "Distribution" => "lib/Distribution.md",
             "Subtypes" => "lib/Subtypes.md",
             "Arrays" => "lib/Arrays.md",
+            "Timing" => "lib/Timing.md",
         ],
         "About" => "about.md"
     ],
