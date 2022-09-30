@@ -32,6 +32,7 @@ matrix_type
 nonzero_columns
 nonzero_indices
 projection_matrix
+rand_pos_neg_zerosum_vector
 rationalize
 rectify
 remove_duplicates_sorted!

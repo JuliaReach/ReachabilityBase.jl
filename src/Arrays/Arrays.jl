@@ -8,6 +8,8 @@ module Arrays
 using LinearAlgebra, Requires, SparseArrays
 import LinearAlgebra: rank
 
+using Random: AbstractRNG, GLOBAL_RNG
+
 using ReachabilityBase.Assertions: @assert, activate_assertions
 activate_assertions(Arrays)  # activate assertions by default
 
@@ -42,6 +44,7 @@ export abs_sum,
        nonzero_indices,
        prepend_zeros,
        projection_matrix,
+       rand_pos_neg_zerosum_vector,
        rank,
        rationalize,
        rectify,
