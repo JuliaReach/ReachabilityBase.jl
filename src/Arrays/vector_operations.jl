@@ -252,8 +252,8 @@ end
 end
 
 """
-    right_turn([O::AbstractVector{N}=[0, 0]], u::AbstractVector{N},
-               v::AbstractVector{N}) where {N<:Real}
+    right_turn([O::AbstractVector{<:Real}=[0, 0]], u::AbstractVector{<:Real},
+               v::AbstractVector{<:Real})
 
 Compute a scalar that determines whether the acute angle defined by three 2D
 points `O`, `u`, `v` in the plane is a right turn (< 180° counter-clockwise)
@@ -277,21 +277,21 @@ they constitute a negative angle.
 The [cross product](https://en.wikipedia.org/wiki/Cross_product) is used to
 determine the sense of rotation.
 """
-@inline function right_turn(O::AbstractVector{N},
-                            u::AbstractVector{N},
-                            v::AbstractVector{N}) where {N<:Real}
+@inline function right_turn(O::AbstractVector{<:Real},
+                            u::AbstractVector{<:Real},
+                            v::AbstractVector{<:Real})
     return (u[1] - O[1]) * (v[2] - O[2]) - (u[2] - O[2]) * (v[1] - O[1])
 end
 
 # version for O = origin
-@inline function right_turn(u::AbstractVector{N},
-                            v::AbstractVector{N}) where {N<:Real}
+@inline function right_turn(u::AbstractVector{<:Real},
+                            v::AbstractVector{<:Real})
     return u[1] * v[2] - u[2] * v[1]
 end
 
 """
-    is_right_turn([O::AbstractVector{N}=[0, 0]], u::AbstractVector{N},
-                  v::AbstractVector{N}) where {N<:Real}
+    is_right_turn([O::AbstractVector{<:Real}=[0, 0]], u::AbstractVector{<:Real},
+                  v::AbstractVector{<:Real})
 
 Determine whether the acute angle defined by three 2D points `O`, `u`, `v`
 in the plane is a right turn (< 180° counter-clockwise) with
@@ -309,16 +309,16 @@ counter-clockwise) with respect to the center `O`.
 
 `true` iff the vectors constitute a right turn.
 """
-@inline function is_right_turn(O::AbstractVector{N},
-                               u::AbstractVector{N},
-                               v::AbstractVector{N}) where {N<:Real}
-    return _geq(right_turn(O, u, v), zero(N))
+@inline function is_right_turn(O::AbstractVector{<:Real},
+                               u::AbstractVector{<:Real},
+                               v::AbstractVector{<:Real})
+    return _geq(right_turn(O, u, v), 0)
 end
 
 # version for O = origin
-@inline function is_right_turn(u::AbstractVector{N},
-                               v::AbstractVector{N}) where {N<:Real}
-    return _geq(right_turn(u, v), zero(N))
+@inline function is_right_turn(u::AbstractVector{<:Real},
+                               v::AbstractVector{<:Real})
+    return _geq(right_turn(u, v), 0)
 end
 
 """
