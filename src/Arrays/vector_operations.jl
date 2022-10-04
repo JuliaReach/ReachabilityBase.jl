@@ -537,3 +537,58 @@ end
 function isupwards(vec)
     return vec[2] > 0 || (vec[2] == 0 && vec[1] > 0)
 end
+
+"""
+    rand_pos_neg_zerosum_vector(n::Int; [N]::Type{<:Real}=Float64,
+                                        [rng]::AbstractRNG=GLOBAL_RNG)
+
+Create a vector of random numbers such that the total sum is (approximately)
+zero, no duplicates exist, all positive entries come first, and all negative
+entries come last.
+
+### Input
+
+- `n`   -- length of the vector
+- `N`   -- (optional; default: `Float64`) numeric type
+- `rng` -- (optional; default: `GLOBAL_RNG`) random number generator
+
+### Output
+
+A vector as described above.
+
+### Algorithm
+
+This is the first phase of the algorithm described
+[here](https://stackoverflow.com/a/47358689).
+"""
+function rand_pos_neg_zerosum_vector(n::Int; N::Type{<:Real}=Float64,
+                                     rng::AbstractRNG=GLOBAL_RNG)
+    # generate a sorted list of random x and y coordinates
+    list = sort!(randn(rng, N, n))
+    while (length(remove_duplicates_sorted!(list)) < n)
+        # make sure that no duplicates exist
+        list = sort!(append!(list, randn(rng, N, length(list) - n)))
+    end
+    # lists of consecutive points
+    l1 = Vector{N}() # normal
+    l2 = Vector{N}() # inverted
+    res = Vector{N}()
+    @inbounds begin
+        push!(l1, list[1])
+        push!(l2, list[1])
+        for i in 2:n-1
+            push!(rand(rng, Bool) ? l1 : l2, list[i])
+        end
+        push!(l1, list[end])
+        push!(l2, list[end])
+        # convert to vectors representing the distance (order does not matter)
+        sizehint!(res, n)
+        for i in 1:length(l1)-1
+            push!(res, l1[i+1] - l1[i])
+        end
+        for i in 1:length(l2)-1
+            push!(res, l2[i] - l2[i+1])
+        end
+    end
+    return res
+end

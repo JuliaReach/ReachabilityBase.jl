@@ -18,10 +18,30 @@ for N in [Float64, Float32, Rational{Int}]
 end
 
 for N in [Float32, Float64]
+    # rationalize
     x = [N(1), N(2), N(3)]
     out = [1//1, 2//1, 3//1]
     @test rationalize(x) == out
     v = rationalize(BigInt, x)
     @test v[1] isa Rational{BigInt}
     @test rationalize(x, tol=2*eps(N)) == out
+
+    # rand_pos_neg_zerosum_vector
+    x = rand_pos_neg_zerosum_vector(10, N=N)
+    @test isapproxzero(sum(x))
+    @test length(unique(x)) == length(x)
+    # test that the order is "first all positive, then all negative entries"
+    posneg = true
+    neg = false
+    for xi in x
+        if xi > zero(N)
+            if neg
+                posneg = false
+                break
+            end
+        elseif !neg
+            neg = true
+        end
+    end
+    @test posneg
 end
