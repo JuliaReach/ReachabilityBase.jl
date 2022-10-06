@@ -22,6 +22,7 @@ them is not loaded.
                    the package
 - `explanation` -- (optional; default: `""`) additional explanation in the error
                    message
+- `require_all` -- (optional; default: `true`) flag to require all `packages`
 
 ### Output
 
@@ -33,6 +34,10 @@ Otherwise it prints an error message.
 The argument `mod` should always be `@__MODULE__`, but since this is a macro, it
 has to be inserted by the caller.
 
+The argument `require_all` can be set to `false` to require only one of the
+given packages. This is useful if multiple packages provide a functionality and
+any of them is fine.
+
 ### Algorithm
 
 This function uses `@assert` and hence loses its ability to print an error
@@ -42,7 +47,7 @@ function require end
 
 # version for one package
 function require(mod, package::Symbol; fun_name::String="",
-                 explanation::String="")
+                 explanation::String="", require_all::Bool=true)
     @assert isdefined(mod, package) "package '$package' not loaded" *
         (fun_name == "" ? "" :
             " (it is required for executing `$fun_name`" *
@@ -51,12 +56,20 @@ end
 
 # version for multiple packages
 function require(mod, packages::AbstractVector{Symbol}; fun_name::String="",
-                 explanation::String="")
-    @assert all(isdefined(mod, package) for package in packages) "no " *
-        "package from '$packages' loaded" *
-        (fun_name == "" ? "" :
-            " (one of them is required for executing `$fun_name`" *
-            (explanation == "" ? "" : " " * explanation) * ")")
+                 explanation::String="", require_all::Bool=true)
+    if require_all
+        @assert all(isdefined(mod, package) for package in packages) "some " *
+            "package from '$packages' not loaded" *
+            (fun_name == "" ? "" :
+                " (they are all required for executing `$fun_name`" *
+                (explanation == "" ? "" : " " * explanation) * ")")
+    else
+        @assert any(isdefined(mod, package) for package in packages) "no " *
+            "package from '$packages' loaded" *
+            (fun_name == "" ? "" :
+                " (at least one is required for executing `$fun_name`" *
+                (explanation == "" ? "" : " " * explanation) * ")")
+    end
 end
 
 end  # module
