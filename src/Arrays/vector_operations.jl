@@ -592,3 +592,71 @@ function rand_pos_neg_zerosum_vector(n::Int; N::Type{<:Real}=Float64,
     end
     return res
 end
+
+"""
+     uniform_partition(n::Int, block_size::Int)
+
+Compute a uniform block partition of the given size.
+
+### Input
+
+- `n`          -- number of dimensions of the partition
+- `block_size` -- size of each block
+
+### Output
+
+A vector of ranges, `Vector{UnitRange{Int}}`, such that the size of each block
+is the same, if possible.
+
+### Examples
+
+If the number of dimensions `n` is 2, we have two options: either two blocks
+of size `1` or one block of size `2`:
+
+```jldoctest partition; setup = :(using ReachabilityBase.Arrays)
+julia> uniform_partition(2, 1)
+2-element Vector{UnitRange{Int64}}:
+ 1:1
+ 2:2
+
+julia> uniform_partition(2, 2)
+1-element Vector{UnitRange{Int64}}:
+ 1:2
+```
+
+If the `block_size` argument is not compatible with (i.e., does not divide) `n`,
+the output is filled with one block of the size needed to reach `n`:
+
+```jldoctest partition
+julia> uniform_partition(3, 1)
+3-element Vector{UnitRange{Int64}}:
+ 1:1
+ 2:2
+ 3:3
+
+julia> uniform_partition(3, 2)
+2-element Vector{UnitRange{Int64}}:
+ 1:2
+ 3:3
+
+julia> uniform_partition(10, 6)
+2-element Vector{UnitRange{Int64}}:
+ 1:6
+ 7:10
+```
+"""
+function uniform_partition(n::Int, block_size::Int)
+    m = div(n, block_size)
+    r = n % block_size
+    res = Vector{UnitRange{Int}}(undef, r > 0 ? m + 1 : m)
+    k = 1
+    @inbounds for i in 1:m
+        l = k + block_size - 1
+        res[i] = k:l
+        k = l + 1
+    end
+    @inbounds if r > 0
+        res[m+1] = k:n
+    end
+    return res
+end
