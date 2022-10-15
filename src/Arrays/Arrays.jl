@@ -59,6 +59,7 @@ export abs_sum,
        substitute!,
        to_matrix,
        to_negative_vector,
+       uniform_partition,
        vector_type
 
 include("SingleEntryVector.jl")
