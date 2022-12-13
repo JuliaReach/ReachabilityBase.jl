@@ -23,6 +23,10 @@ for _dummy_ in 1:1 # avoid global variable warnings
     # matrix rank
     A = sprandn(2, 10, 0.4)
     @test rank(Matrix(A)) == rank(A) == rank(view(A, :, :))
+
+    # extend_with_zeros
+    @test extend_with_zeros(Float64[], [1, 2]) == [0.0, 0.0]
+    @test extend_with_zeros([1, 2, 3], [3, 5]) == [1, 2, 0, 3, 0]
 end
 
 for N in [Float64, Rational{Int}, Float32]
