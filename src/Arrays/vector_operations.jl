@@ -660,3 +660,45 @@ function uniform_partition(n::Int, block_size::Int)
     end
     return res
 end
+
+"""
+    extend_with_zeros(x::AbstractVector, indices::AbstractVector{<:Int})
+
+Extend a vector with zeros in the given dimensions.
+
+### Input
+
+- `x`       -- vector
+- `indices` -- indices to extend, from the interval
+               `1:(length(x) + length(indices))`
+
+### Output
+
+A new vector.
+
+### Notes
+
+The indices in the extension list are interpreted on the output vector. This is
+best understood with an example. Let `x = [1, 2, 3]` and `indices = [3, 5]`.
+Then the output vector is `y = [1, 2, 0, 3, 0]`. Indeed, `y[3] == y[5] == 0`.
+"""
+function extend_with_zeros(x::AbstractVector, indices::AbstractVector{<:Int})
+    N = eltype(x)
+    n = length(x) + length(indices)
+    y = zeros(N, n)
+    j_x = 1
+    j_indices = 1
+    done = false
+    for i in 1:n
+        if !done && i == indices[j_indices]
+            j_indices += 1
+            if j_indices > length(indices)
+                done = true
+            end
+        else
+            y[i] = x[j_x]
+            j_x += 1
+        end
+    end
+    return y
+end

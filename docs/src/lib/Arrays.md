@@ -19,6 +19,7 @@ cross_product(::AbstractMatrix{N}) where {N<:Real}
 distance(::AbstractVector, ::AbstractVector; ::Real=2.0)
 dot_zero
 extend
+extend_with_zeros
 hasfullrowrank
 inner
 is_cyclic_permutation
