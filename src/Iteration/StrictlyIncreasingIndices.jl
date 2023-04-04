@@ -17,6 +17,8 @@ The iterator ranges over ``\\binom{n}{m}`` (`n` choose `m`) possible vectors.
 This implementation results in a lexicographic order with the last index growing
 first.
 
+See also [`NondecreasingIndices`](@ref) for a nondecreasing iterator.
+
 ### Examples
 
 ```jldoctest; setup = :(using ReachabilityBase.Iteration)

@@ -14,4 +14,5 @@ CurrentModule = ReachabilityBase.Iteration
 ```@docs
 Iteration
 StrictlyIncreasingIndices
+NondecreasingIndices
 ```
