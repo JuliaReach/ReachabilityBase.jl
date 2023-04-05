@@ -18,7 +18,6 @@ using ReachabilityBase.Comparison: _geq, isapproxzero, _isapprox, _in
 import Base: rationalize
 
 export abs_sum,
-       allequal,
        append_zeros,
        argmaxabs,
        At_ldiv_B,
@@ -62,6 +61,10 @@ export abs_sum,
        to_negative_vector,
        uniform_partition,
        vector_type
+
+@static if VERSION < v"1.8"
+    export allequal
+end
 
 include("SingleEntryVector.jl")
 include("array_operations.jl")
