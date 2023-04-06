@@ -346,6 +346,7 @@ function distance(x::AbstractVector, y::AbstractVector; p::Real=2.0)
     return norm(x - y, p)
 end
 
+@static if VERSION < v"1.8"
 """
     allequal(x)
 
@@ -362,6 +363,9 @@ Check whether all elements in a sequence are equal
 ### Notes
 
 The code is taken from [here](https://stackoverflow.com/a/47578613).
+
+This function is available in Julia `Base` since v1.8. Hence it is only defined
+here if a Julia version below v1.8 is used.
 """
 function allequal(x)
     length(x) < 2 && return true
@@ -371,6 +375,7 @@ function allequal(x)
         x[i] == e1 || return false
     end
     return true
+end
 end
 
 # if `vector` has exactly one non-zero entry, return its index
