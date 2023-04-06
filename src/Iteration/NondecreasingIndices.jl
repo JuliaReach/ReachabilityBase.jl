@@ -41,6 +41,11 @@ julia> for v in NondecreasingIndices(4, 2)
 struct NondecreasingIndices
     n::Int
     m::Int
+
+    function NondecreasingIndices(n::Int, m::Int)
+        @assert n > 0 && m > 0 "require n > 0 and m > 0"
+        new(n, m)
+    end
 end
 
 Base.eltype(::Type{NondecreasingIndices}) = Vector{Int}
@@ -51,7 +56,8 @@ Base.length(ndi::NondecreasingIndices) = binomial(ndi.n + ndi.m - 1, ndi.m)
 # initialization
 function Base.iterate(ndi::NondecreasingIndices)
     v = ones(Int, ndi.m)
-    return (v, v)
+    next = ndi.n == 1 ? nothing : v
+    return (v, next)
 end
 
 # normal iteration
