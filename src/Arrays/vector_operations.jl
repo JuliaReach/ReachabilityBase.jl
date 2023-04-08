@@ -198,24 +198,32 @@ function is_cyclic_permutation(candidate::AbstractVector,
 end
 
 """
-    isabove(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
+    isabove(u::AbstractVector, v1::AbstractVector, v2::AbstractVector)
 
-Checks if the difference of the given vectors is pointing towards the given
-direction.
+Checks whether the difference `v1 - v2` points toward the given direction `u`.
 
 ### Input
 
-- `u` -- direction
-- `Vi` -- first vector
-- `Vj` -- second vector
+- `u`  -- direction
+- `v1` -- first vector
+- `v2` -- second vector
 
 ### Output
 
-A boolean indicating if the difference of the given vectors is pointing
-towards the given direction.
+A Boolean indicating whether the difference of the given vectors points toward
+the given direction.
+
+### Algorithm
+
+The result is equivalent to `dot(u, v1 - v2) > 0`, but the implementation avoids
+the allocation of the difference vector.
 """
-@inline function isabove(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
-    return dot(u, Vi - Vj) > 0
+function isabove(u::AbstractVector, v1::AbstractVector, v2::AbstractVector)
+    v = zero(u[1])
+    @inbounds for k in eachindex(u)
+        v += u[k] * (v1[k] - v2[k])
+    end
+    return v > 0
 end
 
 """
