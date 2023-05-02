@@ -370,7 +370,6 @@ end
     function allequal(x)
         length(x) < 2 && return true
         e1 = @inbounds x[1]
-        i = 2
         @inbounds for i in 2:length(x)
             x[i] == e1 || return false
         end
