@@ -6,6 +6,7 @@ hierarchy.
 """
 module Subtypes
 
+import InteractiveUtils
 import InteractiveUtils: subtypes
 
 export subtypes
