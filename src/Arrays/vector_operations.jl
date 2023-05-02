@@ -14,7 +14,7 @@ The dot product of `x` and `y`, but with the rule that `0 * Inf == 0`.
 """
 function dot_zero(x::AbstractVector{N}, y::AbstractVector{N}) where {N<:Real}
     res = zero(N)
-    for i in 1:length(x)
+    for i in eachindex(x)
         if !iszero(x[i]) && !iszero(y[i])
             res += x[i] * y[i]
         end
@@ -116,7 +116,7 @@ function _ismultiple(u::AbstractVector, v::AbstractVector; allow_negative::Bool)
     @assert length(u) == length(v) "wrong dimension"
     no_factor = true
     factor = 0
-    @inbounds for i in 1:length(u)
+    @inbounds for i in eachindex(u)
         if isapproxzero(u[i])
             if !isapproxzero(v[i])
                 return (false, 0)
