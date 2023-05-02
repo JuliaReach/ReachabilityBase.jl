@@ -39,7 +39,7 @@ struct StrictlyIncreasingIndices
 
     function StrictlyIncreasingIndices(n::Int, m::Int)
         @assert n >= m > 0 "require n >= m > 0"
-        new(n, m)
+        return new(n, m)
     end
 end
 
@@ -48,7 +48,7 @@ Base.length(sii::StrictlyIncreasingIndices) = binomial(sii.n, sii.m)
 
 # initialization
 function Base.iterate(sii::StrictlyIncreasingIndices)
-    v = [1:sii.m;]
+    v = [1:(sii.m);]
     next = sii.n == sii.m ? nothing : v
     return (v, next)
 end
@@ -64,8 +64,8 @@ function Base.iterate(sii::StrictlyIncreasingIndices, state::AbstractVector{Int}
     end
     # update vector
     v[i] += 1
-    for j in i+1:sii.m
-        v[j] = v[j-1] + 1
+    for j in (i + 1):(sii.m)
+        v[j] = v[j - 1] + 1
     end
     # detect termination: first index has maximum value
     if i == 1 && v[1] == (sii.n - sii.m + 1)

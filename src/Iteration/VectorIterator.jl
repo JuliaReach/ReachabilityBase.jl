@@ -7,7 +7,6 @@ function Base.length(it::VectorIterator)
     return length(it.vector)
 end
 
-
 function Base.eltype(::Type{VectorIterator{T}}) where {T}
     return eltype(T)
 end

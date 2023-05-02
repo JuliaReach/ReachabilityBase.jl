@@ -63,16 +63,22 @@ of the `i`-th component of `x`.
 
 See also `Base.rationalize`.
 """
-function rationalize(::Type{T}, x::AbstractArray{N}, tol::Real) where {T<:Integer, N<:AbstractFloat}
+function rationalize(::Type{T}, x::AbstractArray{N}, tol::Real) where {T<:Integer,N<:AbstractFloat}
     return rationalize.(Ref(T), x, Ref(tol))
 end
 
 # method extensions
-rationalize(::Type{T}, x::AbstractArray{N}; tol::Real=eps(N)) where {T<:Integer, N<:AbstractFloat} =  rationalize(T, x, tol)
-rationalize(x::AbstractArray{N}; kwargs...) where {N<:AbstractFloat} = rationalize(Int, x; kwargs...)
+function rationalize(::Type{T}, x::AbstractArray{N};
+                     tol::Real=eps(N)) where {T<:Integer,N<:AbstractFloat}
+    return rationalize(T, x, tol)
+end
+function rationalize(x::AbstractArray{N}; kwargs...) where {N<:AbstractFloat}
+    return rationalize(Int, x; kwargs...)
+end
 
 # nested vectors
-function rationalize(::Type{T}, x::AbstractArray{<:AbstractArray{N}}, tol::Real) where {T<:Integer, N<:AbstractFloat}
+function rationalize(::Type{T}, x::AbstractArray{<:AbstractArray{N}},
+                     tol::Real) where {T<:Integer,N<:AbstractFloat}
     return rationalize.(Ref(T), x, Ref(tol))
 end
 

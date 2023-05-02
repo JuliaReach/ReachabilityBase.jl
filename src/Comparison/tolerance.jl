@@ -49,12 +49,14 @@ end
 default_tolerance(N::Type{<:Number}) = error("default tolerance for numeric type $N is not defined")
 default_tolerance(N::Type{<:Rational}) = Tolerance(zero(N), zero(N), zero(N))
 default_tolerance(N::Type{<:Integer}) = Tolerance(zero(N), zero(N), zero(N))
-default_tolerance(N::Type{<:AbstractFloat}) = Tolerance(Base.rtoldefault(N), N(10) * sqrt(eps(N)), zero(N))
+function default_tolerance(N::Type{<:AbstractFloat})
+    return Tolerance(Base.rtoldefault(N), N(10) * sqrt(eps(N)), zero(N))
+end
 
 function set_tolerance(N, tolerance::Tolerance=default_tolerance(N))
     set_rtol(N, tolerance.rtol)
     set_ztol(N, tolerance.ztol)
-    set_atol(N, tolerance.atol)
+    return set_atol(N, tolerance.atol)
 end
 
 # global Float64 tolerances
@@ -80,7 +82,7 @@ set_ztol(N::Type{<:Rational}, ε::Rational) = _TOL_RAT.ztol = ε
 set_atol(N::Type{<:Rational}, ε::Rational) = _TOL_RAT.atol = ε
 
 # global default tolerances for other numeric types
-TOL_N = Dict{Type{<:Number}, Tolerance}()
+TOL_N = Dict{Type{<:Number},Tolerance}()
 _rtol(N::Type{<:Number}) = get!(TOL_N, N, default_tolerance(N)).rtol
 _ztol(N::Type{<:Number}) = get!(TOL_N, N, default_tolerance(N)).ztol
 _atol(N::Type{<:Number}) = get!(TOL_N, N, default_tolerance(N)).atol

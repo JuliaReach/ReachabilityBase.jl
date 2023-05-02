@@ -49,9 +49,9 @@ function require end
 function require(mod, package::Symbol; fun_name::String="",
                  explanation::String="", require_all::Bool=true)
     @assert isdefined(mod, package) "package '$package' not loaded" *
-        (fun_name == "" ? "" :
-            " (it is required for executing `$fun_name`" *
-            (explanation == "" ? "" : " " * explanation) * ")")
+                                    (fun_name == "" ? "" :
+                                     " (it is required for executing `$fun_name`" *
+                                     (explanation == "" ? "" : " " * explanation) * ")")
 end
 
 # version for multiple packages
@@ -59,16 +59,18 @@ function require(mod, packages::AbstractVector{Symbol}; fun_name::String="",
                  explanation::String="", require_all::Bool=true)
     if require_all
         @assert all(isdefined(mod, package) for package in packages) "some " *
-            "package from '$packages' not loaded" *
-            (fun_name == "" ? "" :
-                " (they are all required for executing `$fun_name`" *
-                (explanation == "" ? "" : " " * explanation) * ")")
+                                                                     "package from '$packages' not loaded" *
+                                                                     (fun_name == "" ? "" :
+                                                                      " (they are all required for executing `$fun_name`" *
+                                                                      (explanation == "" ? "" :
+                                                                       " " * explanation) * ")")
     else
         @assert any(isdefined(mod, package) for package in packages) "no " *
-            "package from '$packages' loaded" *
-            (fun_name == "" ? "" :
-                " (at least one is required for executing `$fun_name`" *
-                (explanation == "" ? "" : " " * explanation) * ")")
+                                                                     "package from '$packages' loaded" *
+                                                                     (fun_name == "" ? "" :
+                                                                      " (at least one is required for executing `$fun_name`" *
+                                                                      (explanation == "" ? "" :
+                                                                       " " * explanation) * ")")
     end
 end
 

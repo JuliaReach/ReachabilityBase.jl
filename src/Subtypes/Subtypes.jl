@@ -81,7 +81,7 @@ function subtypes(atype, concrete::Bool)
             append!(subtypes_to_test, new_subtypes)
         end
     end
-    return sort(result, by=string)
+    return sort(result; by=string)
 end
 
 end  # module

@@ -8,7 +8,7 @@ const DEFAULT_COND_TOL = 1e6
 @inline At_ldiv_B(A, B) = transpose(A) \ B
 
 # rank of sparse submatrix (see #1497)
-rank(M::SubArray{N, 2, <:SparseMatrixCSC}) where {N} = rank(sparse(M))
+rank(M::SubArray{N,2,<:SparseMatrixCSC}) where {N} = rank(sparse(M))
 
 """
     issquare(M::AbstractMatrix)
@@ -75,7 +75,7 @@ end
 # cond is not available for sparse matrices; see JuliaLang#6485 and related issues
 function isinvertible(M::AbstractSparseMatrix;
                       cond_tol::Number=DEFAULT_COND_TOL)
-    return issquare(M) && isinvertible(Matrix(M), cond_tol=cond_tol)
+    return issquare(M) && isinvertible(Matrix(M); cond_tol=cond_tol)
 end
 
 function isinvertible(M::Diagonal; cond_tol=nothing)
@@ -128,7 +128,7 @@ end
 
 # det cannot handle sparse matrices in some cases
 cross_product(M::AbstractSparseMatrix) = cross_product(Matrix(M))
-cross_product(M::SubArray{N, 2, <:AbstractSparseMatrix}) where {N} = cross_product(Matrix(M))
+cross_product(M::SubArray{N,2,<:AbstractSparseMatrix}) where {N} = cross_product(Matrix(M))
 
 """
     nonzero_columns(A::AbstractMatrix)
@@ -157,7 +157,7 @@ end
 
 function nonzero_columns(A::SparseMatrixCSC)
     dropzeros!(A)
-    return collect(j for j in 1:A.n if A.colptr[j] < A.colptr[j+1])
+    return collect(j for j in 1:(A.n) if A.colptr[j] < A.colptr[j + 1])
 end
 
 """
@@ -189,13 +189,13 @@ function extend(M::AbstractMatrix; check_rank=true)
     m, n = size(M)
 
     m <= n && throw(ArgumentError("this function requires that the number " *
-    "of rows is greater than the number of columns, but they are of size $m and " *
-    "$n respectively"))
+                                  "of rows is greater than the number of columns, but they are of size $m and " *
+                                  "$n respectively"))
 
     if check_rank
         r = rank(M)
         r != n && throw(ArgumentError("the rank of the given matrix is " *
-        "$r, but this function assumes that it is $n"))
+                                      "$r, but this function assumes that it is $n"))
     end
 
     # compute QR decomposition of M
@@ -249,20 +249,21 @@ function projection_matrix(block::AbstractVector{Int}, n::Int, N::Type{<:Number}
 end
 
 # fallback: represent the projection matrix as a sparse array
-function projection_matrix(block::AbstractVector{Int}, n::Int, VN::Type{<:AbstractVector{N}}) where {N}
+function projection_matrix(block::AbstractVector{Int}, n::Int,
+                           VN::Type{<:AbstractVector{N}}) where {N}
     return projection_matrix(block, n, N)
 end
 
 function load_projection_matrix_static()
-
-return quote
-    # represent the projection matrix with a static array
-    function projection_matrix(block::AbstractVector{Int}, n::Int, VN::Type{<:SVector{L, N}}) where {L, N}
-        mat = projection_matrix(block, n, N)
-        m = size(mat, 1)
-        return SMatrix{m, n}(mat)
-    end
-end # quote
+    return quote
+        # represent the projection matrix with a static array
+        function projection_matrix(block::AbstractVector{Int}, n::Int,
+                                   VN::Type{<:SVector{L,N}}) where {L,N}
+            mat = projection_matrix(block, n, N)
+            m = size(mat, 1)
+            return SMatrix{m,n}(mat)
+        end
+    end # quote
 end # end load_projection_matrix_static
 
 """
