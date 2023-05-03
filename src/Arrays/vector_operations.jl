@@ -12,9 +12,9 @@ Dot product with preference for zero value in the presence of infinity values.
 
 The dot product of `x` and `y`, but with the rule that `0 * Inf == 0`.
 """
-function dot_zero(x::AbstractVector{N}, y::AbstractVector{N}) where{N<:Real}
+function dot_zero(x::AbstractVector{N}, y::AbstractVector{N}) where {N<:Real}
     res = zero(N)
-    for i in 1:length(x)
+    for i in eachindex(x)
         if !iszero(x[i]) && !iszero(y[i])
             res += x[i] * y[i]
         end
@@ -36,9 +36,9 @@ Remove duplicate entries in a sorted vector.
 The input vector without duplicates.
 """
 function remove_duplicates_sorted!(v::AbstractVector)
-    for i in length(v)-1:-1:1
-        if v[i] == v[i+1]
-            splice!(v, i+1)
+    for i in (length(v) - 1):-1:1
+        if v[i] == v[i + 1]
+            splice!(v, i + 1)
         end
     end
     return v
@@ -116,7 +116,7 @@ function _ismultiple(u::AbstractVector, v::AbstractVector; allow_negative::Bool)
     @assert length(u) == length(v) "wrong dimension"
     no_factor = true
     factor = 0
-    @inbounds for i in 1:length(u)
+    @inbounds for i in eachindex(u)
         if isapproxzero(u[i])
             if !isapproxzero(v[i])
                 return (false, 0)
@@ -194,7 +194,7 @@ function is_cyclic_permutation(candidate::AbstractVector,
     if length(paragon) != m
         return false
     end
-    return any(candidate == circshift(paragon, i) for i in 0:m-1)
+    return any(candidate == circshift(paragon, i) for i in 0:(m - 1))
 end
 
 """
@@ -215,7 +215,7 @@ A boolean indicating if the difference of the given vectors is pointing
 towards the given direction.
 """
 @inline function isabove(u::AbstractVector, Vi::AbstractVector, Vj::AbstractVector)
-    dot(u, Vi - Vj) > 0
+    return dot(u, Vi - Vj) > 0
 end
 
 """
@@ -347,35 +347,34 @@ function distance(x::AbstractVector, y::AbstractVector; p::Real=2.0)
 end
 
 @static if VERSION < v"1.8"
-"""
-    allequal(x)
+    """
+        allequal(x)
 
-Check whether all elements in a sequence are equal
+    Check whether all elements in a sequence are equal
 
-### Input
+    ### Input
 
-- `x` -- sequence
+    - `x` -- sequence
 
-### Output
+    ### Output
 
-`true` iff all elements in `x` are equal.
+    `true` iff all elements in `x` are equal.
 
-### Notes
+    ### Notes
 
-The code is taken from [here](https://stackoverflow.com/a/47578613).
+    The code is taken from [here](https://stackoverflow.com/a/47578613).
 
-This function is available in Julia `Base` since v1.8. Hence it is only defined
-here if a Julia version below v1.8 is used.
-"""
-function allequal(x)
-    length(x) < 2 && return true
-    e1 = @inbounds x[1]
-    i = 2
-    @inbounds for i=2:length(x)
-        x[i] == e1 || return false
+    This function is available in Julia `Base` since v1.8. Hence it is only defined
+    here if a Julia version below v1.8 is used.
+    """
+    function allequal(x)
+        length(x) < 2 && return true
+        e1 = @inbounds x[1]
+        @inbounds for i in 2:length(x)
+            x[i] == e1 || return false
+        end
+        return true
     end
-    return true
-end
 end
 
 # if `vector` has exactly one non-zero entry, return its index
@@ -449,7 +448,7 @@ function ispermutation(u::AbstractVector{T}, v::AbstractVector) where {T}
     if length(u) != length(v)
         return false
     end
-    occurrence_map = Dict{T, Int}()
+    occurrence_map = Dict{T,Int}()
     has_duplicates = false
     for e in u
         if !_in(e, v)
@@ -503,7 +502,7 @@ Apply a substitution to a given vector.
 
 A fresh vector corresponding to `x` after `substitution` was applied.
 """
-function substitute(substitution::Dict{Int, T}, x::AbstractVector{T}) where {T}
+function substitute(substitution::Dict{Int,T}, x::AbstractVector{T}) where {T}
     return substitute!(substitution, copy(x))
 end
 
@@ -527,12 +526,12 @@ applied.
 The vector `x` is modified in-place if it has type `Vector` or `SparseVector`.
 Otherwise, we first create a new `Vector` from it.
 """
-function substitute!(substitution::Dict{Int, T}, x::AbstractVector{T}) where {T}
+function substitute!(substitution::Dict{Int,T}, x::AbstractVector{T}) where {T}
     return substitute!(Vector(x), substitution)
 end
 
-function substitute!(substitution::Dict{Int, T},
-                     x::Union{Vector{T}, SparseVector{T}}) where {T}
+function substitute!(substitution::Dict{Int,T},
+                     x::Union{Vector{T},SparseVector{T}}) where {T}
     for (index, value) in substitution
         x[index] = value
     end
@@ -581,18 +580,18 @@ function rand_pos_neg_zerosum_vector(n::Int; N::Type{<:Real}=Float64,
     @inbounds begin
         push!(l1, list[1])
         push!(l2, list[1])
-        for i in 2:n-1
+        for i in 2:(n - 1)
             push!(rand(rng, Bool) ? l1 : l2, list[i])
         end
         push!(l1, list[end])
         push!(l2, list[end])
         # convert to vectors representing the distance (order does not matter)
         sizehint!(res, n)
-        for i in 1:length(l1)-1
-            push!(res, l1[i+1] - l1[i])
+        for i in 1:(length(l1) - 1)
+            push!(res, l1[i + 1] - l1[i])
         end
-        for i in 1:length(l2)-1
-            push!(res, l2[i] - l2[i+1])
+        for i in 1:(length(l2) - 1)
+            push!(res, l2[i] - l2[i + 1])
         end
     end
     return res
@@ -661,7 +660,7 @@ function uniform_partition(n::Int, block_size::Int)
         k = l + 1
     end
     @inbounds if r > 0
-        res[m+1] = k:n
+        res[m + 1] = k:n
     end
     return res
 end

@@ -1,35 +1,35 @@
 # computes ‖a^T G‖₁
 @inline function abs_sum(a::AbstractVector, G::AbstractMatrix)
-   n, p = size(G)
-   N = promote_type(eltype(a), eltype(G))
-   abs_sum = zero(N)
-   @inbounds for j in 1:p
-       aux = zero(N)
-       @simd for i in 1:n
-           aux += a[i] * G[i, j]
-       end
-       abs_sum += abs(aux)
-   end
-   return abs_sum
+    n, p = size(G)
+    N = promote_type(eltype(a), eltype(G))
+    abs_sum = zero(N)
+    @inbounds for j in 1:p
+        aux = zero(N)
+        @simd for i in 1:n
+            aux += a[i] * G[i, j]
+        end
+        abs_sum += abs(aux)
+    end
+    return abs_sum
 end
 
 # computes ‖a^T G‖₁ for `a` being a sparse vector
 @inline function abs_sum(a::AbstractSparseVector, G::AbstractMatrix)
-   return sum(abs, transpose(a) * G)
+    return sum(abs, transpose(a) * G)
 end
 
 # computes ‖a^T G‖₁ for `a` having only one nonzero element
 @inline function abs_sum(a::SingleEntryVector, G::AbstractMatrix)
-   p = size(G, 2)
-   i = a.i
-   v = abs(a.v)
-   N = promote_type(eltype(a), eltype(G))
-   abs_sum = zero(N)
-   @inbounds for j in 1:p
-       abs_sum += abs(G[i, j])
-   end
-   abs_sum *= v
-   return abs_sum
+    p = size(G, 2)
+    i = a.i
+    v = abs(a.v)
+    N = promote_type(eltype(a), eltype(G))
+    abs_sum = zero(N)
+    @inbounds for j in 1:p
+        abs_sum += abs(G[i, j])
+    end
+    abs_sum *= v
+    return abs_sum
 end
 
 """
@@ -48,9 +48,8 @@ Compute the inner product ``xᵀ A y``.
 
 The (scalar) result of the multiplication.
 """
-function inner(x::AbstractVector{N}, A::AbstractMatrix{N}, y::AbstractVector{N}
-              ) where {N}
-    dot(x, A * y)
+function inner(x::AbstractVector{N}, A::AbstractMatrix{N}, y::AbstractVector{N}) where {N}
+    return dot(x, A * y)
 end
 
 """
@@ -99,17 +98,17 @@ A matrix type that corresponds in some sense (see Notes below) to `T`.
 """
 function matrix_type end
 
-vector_type(::Type{<:AbstractSparseArray{T}}) where T = SparseVector{T, Int}
-vector_type(VT::Type{<:AbstractVector{T}}) where T = VT
-vector_type(::Type{<:AbstractMatrix{T}}) where T = Vector{T}
+vector_type(::Type{<:AbstractSparseArray{T}}) where {T} = SparseVector{T,Int}
+vector_type(VT::Type{<:AbstractVector{T}}) where {T} = VT
+vector_type(::Type{<:AbstractMatrix{T}}) where {T} = Vector{T}
 
-matrix_type(::Type{<:AbstractVector{T}}) where T = Matrix{T}
-matrix_type(MT::Type{<:AbstractMatrix{T}}) where T = MT
-matrix_type(::Type{<:AbstractSparseVector{T}}) where T = SparseMatrixCSC{T, Int}
+matrix_type(::Type{<:AbstractVector{T}}) where {T} = Matrix{T}
+matrix_type(MT::Type{<:AbstractMatrix{T}}) where {T} = MT
+matrix_type(::Type{<:AbstractSparseVector{T}}) where {T} = SparseMatrixCSC{T,Int}
 
 # matrix constructors
-_matrix(m, n, MT::Type{<:AbstractMatrix{T}}) where T = Matrix{T}(undef, m, n)
-_matrix(m, n, MT::Type{<:SparseMatrixCSC{T}}) where T = spzeros(T, m, n)
+_matrix(m, n, MT::Type{<:AbstractMatrix{T}}) where {T} = Matrix{T}(undef, m, n)
+_matrix(m, n, MT::Type{<:SparseMatrixCSC{T}}) where {T} = spzeros(T, m, n)
 
 """
     to_matrix(vectors::AbstractVector{VN},
@@ -141,9 +140,7 @@ end
 similar_type(x::AbstractVector) = typeof(x)
 
 function load_copy_finalize_static()
-
-return quote
-    similar_type(x::StaticArrays.StaticArray) = StaticArrays.similar_type(x)
-end # quote
-
+    return quote
+        similar_type(x::StaticArrays.StaticArray) = StaticArrays.similar_type(x)
+    end # quote
 end # end load_copy_finalize_static

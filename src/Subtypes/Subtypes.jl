@@ -6,6 +6,7 @@ hierarchy.
 """
 module Subtypes
 
+import InteractiveUtils
 import InteractiveUtils: subtypes
 
 export subtypes
@@ -61,17 +62,17 @@ julia> subtypes(Integer, true)
 """
 function subtypes(atype, concrete::Bool)
     if !concrete
-        return subtypes(atype)
+        return InteractiveUtils.subtypes(atype)
     end
 
-    subtypes_to_test = subtypes(atype)
+    subtypes_to_test = InteractiveUtils.subtypes(atype)
 
     result = Vector{Type}()
     i = 0
     while i < length(subtypes_to_test)
         i += 1
         subtype = subtypes_to_test[i]
-        new_subtypes = subtypes(subtype)
+        new_subtypes = InteractiveUtils.subtypes(subtype)
         if isempty(new_subtypes)
             # base type found
             push!(result, subtype)
@@ -80,7 +81,7 @@ function subtypes(atype, concrete::Bool)
             append!(subtypes_to_test, new_subtypes)
         end
     end
-    return sort(result, by=string)
+    return sort(result; by=string)
 end
 
 end  # module

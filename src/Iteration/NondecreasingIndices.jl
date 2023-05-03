@@ -44,7 +44,7 @@ struct NondecreasingIndices
 
     function NondecreasingIndices(n::Int, m::Int)
         @assert n > 0 && m > 0 "require n > 0 and m > 0"
-        new(n, m)
+        return new(n, m)
     end
 end
 
@@ -71,7 +71,7 @@ function Base.iterate(ndi::NondecreasingIndices, state::AbstractVector{Int})
     # update vector
     v[i] += 1
     val = v[i]
-    for j in i+1:ndi.m  # update all values to the right
+    for j in (i + 1):(ndi.m)  # update all values to the right
         v[j] = val
     end
     # detect termination: first index has maximum value

@@ -34,7 +34,7 @@ Activate `@assert` checks for the given module.
 """
 function activate_assertions(m::Module)
     m.eval(:(are_assertions_enabled() = true))
-    nothing
+    return nothing
 end
 
 """
@@ -48,7 +48,7 @@ Deactivate `@assert` checks for the given module.
 """
 function deactivate_assertions(m::Module)
     m.eval(:(are_assertions_enabled() = false))
-    nothing
+    return nothing
 end
 
 end  # module

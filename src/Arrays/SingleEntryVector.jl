@@ -16,8 +16,7 @@ struct SingleEntryVector{N} <: AbstractVector{N}
 end
 
 # convenience constructor with one-element of corresponding type
-SingleEntryVector{N}(i::Int, n::Int) where {N} =
-    SingleEntryVector{N}(i, n, one(N))
+SingleEntryVector{N}(i::Int, n::Int) where {N} = SingleEntryVector{N}(i, n, one(N))
 
 function Base.getindex(e::SingleEntryVector{N}, i::Int) where {N}
     @boundscheck @assert 1 <= i <= e.n
@@ -36,8 +35,8 @@ for MT in [Matrix, AbstractSparseMatrix]
 end
 
 # multiplication with diagonal matrix
-function Base.:(*)(D::Diagonal{N, V},
-                   e::SingleEntryVector{N}) where {N, V<:AbstractVector{N}}
+function Base.:(*)(D::Diagonal{N,V},
+                   e::SingleEntryVector{N}) where {N,V<:AbstractVector{N}}
     return SingleEntryVector(e.i, e.n, D.diag[e.i] * e.v)
 end
 

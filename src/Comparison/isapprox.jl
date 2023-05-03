@@ -39,15 +39,15 @@ function _isapprox(x::N, y::N;
                    rtol::Real=_rtol(N),
                    ztol::Real=_ztol(N),
                    atol::Real=_atol(N)) where {N<:Real}
-    if isapproxzero(x, ztol=ztol) && isapproxzero(y, ztol=ztol)
+    if isapproxzero(x; ztol=ztol) && isapproxzero(y; ztol=ztol)
         return true
     else
-        return isapprox(x, y, rtol=rtol, atol=atol)
+        return isapprox(x, y; rtol=rtol, atol=atol)
     end
 end
 
 # different numeric types with promotion
-function _isapprox(x::N, y::M; kwargs...) where {N<:Real, M<:Real}
+function _isapprox(x::N, y::M; kwargs...) where {N<:Real,M<:Real}
     return _isapprox(promote(x, y)...; kwargs...)
 end
 
@@ -60,7 +60,7 @@ function _isapprox(A::AbstractArray{N}, B::AbstractArray{N};
         return false
     end
     @inbounds for i in eachindex(A)
-        if !_isapprox(A[i], B[i], rtol=rtol, ztol=ztol, atol=atol)
+        if !_isapprox(A[i], B[i]; rtol=rtol, ztol=ztol, atol=atol)
             return false
         end
     end
@@ -77,13 +77,13 @@ function _isapprox(x::SparseVector{N}, y::SparseVector{N};
     elseif x.nzind != y.nzind
         return false
     end
-    return _isapprox(x.nzval, y.nzval, rtol=rtol, ztol=ztol, atol=atol)
+    return _isapprox(x.nzval, y.nzval; rtol=rtol, ztol=ztol, atol=atol)
 end
 
 # numeric arrays with different numeric types with promotion
 function _isapprox(A::AbstractArray{N}, B::AbstractArray{M};
-                   kwargs...) where {N<:Real, M<:Real}
-    _isapprox(promote(A, B)...; kwargs...)
+                   kwargs...) where {N<:Real,M<:Real}
+    return _isapprox(promote(A, B)...; kwargs...)
 end
 
 # fallback definition

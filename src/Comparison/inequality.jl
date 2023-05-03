@@ -30,7 +30,7 @@ function _leq(x::N, y::N; kwargs...) where {N<:Real}
 end
 
 # promotion implementation
-function _leq(x::N, y::M; kwargs...) where {N<:Real, M<:Real}
+function _leq(x::N, y::M; kwargs...) where {N<:Real,M<:Real}
     return _leq(promote(x, y)...; kwargs...)
 end
 
@@ -39,7 +39,7 @@ function _leq(x::N, y::N;
               rtol::Real=_rtol(N),
               ztol::Real=_ztol(N),
               atol::Real=_atol(N)) where {N<:AbstractFloat}
-    return x <= y || _isapprox(x, y, rtol=rtol, ztol=ztol, atol=atol)
+    return x <= y || _isapprox(x, y; rtol=rtol, ztol=ztol, atol=atol)
 end
 
 """

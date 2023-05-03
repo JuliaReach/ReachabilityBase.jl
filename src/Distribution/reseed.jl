@@ -12,8 +12,8 @@ Reset the RNG seed if the seed argument is a number.
 
 The input RNG if the seed is `nothing`, and a reseeded RNG otherwise.
 """
-function reseed(rng::AbstractRNG, seed::Union{Int, Nothing})
-    if seed != nothing
+function reseed(rng::AbstractRNG, seed::Union{Int,Nothing})
+    if !isnothing(seed)
         return seed!(rng, seed)
     end
     return rng
