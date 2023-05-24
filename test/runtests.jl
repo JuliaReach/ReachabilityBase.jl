@@ -28,6 +28,9 @@ end
 @time @testset "Arrays.vector_operations" begin
     include("Arrays/vector_operations.jl")
 end
+@time @testset "Expm.expm" begin
+    include("Expm/expm.jl")
+end
 
 if VERSION > v"1.6"
     using Documenter
