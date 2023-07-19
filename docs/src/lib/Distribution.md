@@ -13,6 +13,6 @@ CurrentModule = ReachabilityBase.Distribution
 
 ```@docs
 Distribution
-reseed
+reseed!
 DefaultUniform
 ```
