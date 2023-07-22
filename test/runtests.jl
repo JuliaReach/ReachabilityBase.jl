@@ -7,9 +7,6 @@ seed!(1234)  # fix RNG seed for reproducibility
 @time @testset "Comparison" begin
     include("Comparison/comparison.jl")
 end
-@time @testset "Iteration.ColumnIterator" begin
-    include("Iteration/ColumnIterator.jl")
-end
 @time @testset "Iteration" begin
     include("Iteration/StrictlyIncreasingIndices.jl")
 end
