@@ -39,6 +39,7 @@ export abs_sum,
        ispermutation,
        issquare,
        isupwards,
+       logarithmic_norm,
        matrix_type,
        nonzero_columns,
        nonzero_indices,
@@ -71,6 +72,7 @@ include("array_operations.jl")
 include("matrix_operations.jl")
 include("vector_operations.jl")
 include("matrix_vector_operations.jl")
+include("logarithmic_norm.jl")
 include("init.jl")
 
 end  # module
