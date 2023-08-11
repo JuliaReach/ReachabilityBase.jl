@@ -8,7 +8,7 @@ module Distribution
 import Base: rand
 using Random: AbstractRNG, seed!
 
-export reseed, DefaultUniform, rand, rand!
+export reseed!, DefaultUniform, rand, rand!
 
 include("reseed.jl")
 include("DefaultUniform.jl")
