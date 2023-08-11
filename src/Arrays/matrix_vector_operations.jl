@@ -1,16 +1,18 @@
 # computes ‖a^T G‖₁
 @inline function abs_sum(a::AbstractVector, G::AbstractMatrix)
+    @assert length(a) == size(G, 1) "invalid dimensions $(length(a)) and $(size(G))"
+
     n, p = size(G)
     N = promote_type(eltype(a), eltype(G))
-    abs_sum = zero(N)
+    res = zero(N)
     @inbounds for j in 1:p
         aux = zero(N)
         @simd for i in 1:n
             aux += a[i] * G[i, j]
         end
-        abs_sum += abs(aux)
+        res += abs(aux)
     end
-    return abs_sum
+    return res
 end
 
 # computes ‖a^T G‖₁ for `a` being a sparse vector
@@ -20,16 +22,17 @@ end
 
 # computes ‖a^T G‖₁ for `a` having only one nonzero element
 @inline function abs_sum(a::SingleEntryVector, G::AbstractMatrix)
+    @assert length(a) == size(G, 1) "invalid dimensions $(length(a)) and $(size(G))"
+
     p = size(G, 2)
     i = a.i
-    v = abs(a.v)
     N = promote_type(eltype(a), eltype(G))
-    abs_sum = zero(N)
+    res = zero(N)
     @inbounds for j in 1:p
-        abs_sum += abs(G[i, j])
+        res += abs(G[i, j])
     end
-    abs_sum *= v
-    return abs_sum
+    res *= abs(a.v)
+    return res
 end
 
 """
