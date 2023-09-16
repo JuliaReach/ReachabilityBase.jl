@@ -23,7 +23,7 @@ makedocs(; sitename="ReachabilityBase.jl",
                                  "Timing" => "lib/Timing.md"],
                 "About" => "about.md"],
          doctest=false,
-         strict=true)
+         pagesonly=true)
 
 deploydocs(; repo="github.com/JuliaReach/ReachabilityBase.jl.git",
            push_preview=true)
