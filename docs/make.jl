@@ -11,6 +11,7 @@ makedocs(; sitename="ReachabilityBase.jl",
                   ReachabilityBase.Iteration, ReachabilityBase.Commutative,
                   ReachabilityBase.Distribution, ReachabilityBase.Subtypes,
                   ReachabilityBase.Arrays, ReachabilityBase.Timing],
+         pagesonly=true,
          pages=["Home" => "index.md",
                 "Library" => Any["Assertions" => "lib/Assertions.md",
                                  "Require" => "lib/Require.md",
@@ -22,8 +23,7 @@ makedocs(; sitename="ReachabilityBase.jl",
                                  "Arrays" => "lib/Arrays.md",
                                  "Timing" => "lib/Timing.md"],
                 "About" => "about.md"],
-         doctest=false,
-         pagesonly=true)
+         doctest=false)
 
 deploydocs(; repo="github.com/JuliaReach/ReachabilityBase.jl.git",
            push_preview=true)
