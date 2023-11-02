@@ -1,12 +1,11 @@
-# ======================================================================
-# Logarithmic norms of matrices (a.k.a matrix measures)
+# =======================================================================
+# Logarithmic norms of matrices (a.k.a. matrix measures)
 #
 # Reference:
 #
 # C. Desoer and M. Vidyasagar, Feedback Systems: Input-Output Properties.
-# Philadelphia, PA: Society for Industrial and Applied Mathematics,
-# Jan. 2009, ser. Classics in Applied Mathematics.
-# ======================================================================
+# Society for Industrial and Applied Mathematics, 2009.
+# =======================================================================
 
 # logarithmic norm (also known as matrix measure) for commonly used p-norms
 function logarithmic_norm(A::AbstractMatrix, p::Real=Inf)
