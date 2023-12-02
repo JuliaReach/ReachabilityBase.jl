@@ -28,6 +28,7 @@ isinvertible
 ismultiple
 ispermutation
 issquare
+iswellconditioned
 matrix_type
 nonzero_columns
 nonzero_indices

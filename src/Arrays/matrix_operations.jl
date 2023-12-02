@@ -28,6 +28,10 @@ function issquare(M::AbstractMatrix)
     return m == n
 end
 
+function issquare(M::Diagonal)
+    return true
+end
+
 """
     hasfullrowrank(M::AbstractMatrix)
 
@@ -46,39 +50,58 @@ function hasfullrowrank(M::AbstractMatrix)
 end
 
 """
-    isinvertible(M::Matrix; [cond_tol]::Number=DEFAULT_COND_TOL)
+    isinvertible(M::Matrix; [cond_tol]::Number=$DEFAULT_COND_TOL)
 
 A sufficient check of a matrix being invertible (or nonsingular).
 
 ### Input
 
 - `M`        -- matrix
-- `cond_tol` -- (optional, default: `DEFAULT_COND_TOL`) tolerance of matrix
-                condition
+- `cond_tol` -- (optional, default: `$DEFAULT_COND_TOL`) tolerance of matrix condition
 
 ### Output
 
 If the result is `true`, `M` is invertible.
-If the result is `false`, the matrix is non-square or this function could not
-conclude.
+If the result is `false`, the matrix is non-square or not well-conditioned.
 
 ### Algorithm
 
-We check whether the matrix is square and whether the
-[matrix condition number](https://en.wikipedia.org/wiki/Condition_number#Matrices)
-`cond(M)` is below some prescribed tolerance.
+We check whether the matrix is square and well-conditioned (via `iswellconditioned`).
 """
-function isinvertible(M::Matrix; cond_tol::Number=DEFAULT_COND_TOL)
-    return issquare(M) && cond(M) < cond_tol
+function isinvertible(M::AbstractMatrix; cond_tol::Number=DEFAULT_COND_TOL)
+    return issquare(M) && iswellconditioned(M; cond_tol=cond_tol)
+end
+
+"""
+    iswellconditioned(M::Matrix; [cond_tol]::Number=$DEFAULT_COND_TOL)
+
+A check of a matrix being sufficiently well-conditioned.
+
+### Input
+
+- `M`        -- matrix
+- `cond_tol` -- (optional, default: `$DEFAULT_COND_TOL`) tolerance of matrix condition
+
+### Output
+
+`true` iff `M` is well-conditioned subject to the `cond_tol` parameter.
+
+### Algorithm
+
+We check whether the
+[matrix condition number](https://en.wikipedia.org/wiki/Condition_number#Matrices) `cond(M)` is
+below the prescribed tolerance `cond_tol`.
+"""
+function iswellconditioned(M::AbstractMatrix; cond_tol::Number=DEFAULT_COND_TOL)
+    return cond(M) < cond_tol
 end
 
 # cond is not available for sparse matrices; see JuliaLang#6485 and related issues
-function isinvertible(M::AbstractSparseMatrix;
-                      cond_tol::Number=DEFAULT_COND_TOL)
-    return issquare(M) && isinvertible(Matrix(M); cond_tol=cond_tol)
+function iswellconditioned(M::AbstractSparseMatrix; cond_tol::Number=DEFAULT_COND_TOL)
+    return iswellconditioned(Matrix(M); cond_tol=cond_tol)
 end
 
-function isinvertible(M::Diagonal; cond_tol=nothing)
+function iswellconditioned(M::Diagonal; cond_tol=nothing)
     return !any(iszero, diag(M))
 end
 
