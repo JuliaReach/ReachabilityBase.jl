@@ -1,4 +1,5 @@
 using ReachabilityBase.Arrays
+using ReachabilityBase.Comparison
 
 for N in [Float64, Float32, Rational{Int}]
     v1 = N[0, 4, 0]
