@@ -32,6 +32,9 @@ end
         include("Iteration/StrictlyIncreasingIndices.jl")
     end
 end
+@testset "Timing" begin
+    include("Timing/timing.jl")
+end
 
 if VERSION > v"1.6"
     using Documenter
