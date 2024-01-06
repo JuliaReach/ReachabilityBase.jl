@@ -23,23 +23,23 @@ Print the result of a `@timed` call.
         @static if VERSION >= v"1.10"
             # format:
             # time_print(io::IO, elapsedtime, bytes, gctime, allocs, compile_time, recompile_time, newline)
-            Base.time_print(io, stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
-                            Base.gc_alloc_count(stats.gcstats), 0, 0, true)
+            return Base.time_print(io, stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
+                                   Base.gc_alloc_count(stats.gcstats), 0, 0, true)
         elseif VERSION >= v"1.8"
             # format:
             # time_print(elapsedtime, bytes, gctime, allocs, compile_time, recompile_time, newline)
-            Base.time_print(stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
-                            Base.gc_alloc_count(stats.gcstats), 0, 0, true)
+            return Base.time_print(stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
+                                   Base.gc_alloc_count(stats.gcstats), 0, 0, true)
         elseif VERSION >= v"1.6"
             # format:
             # time_print(elapsedtime, bytes, gctime, allocs, compile_time, newline)
-            Base.time_print(stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
-                            Base.gc_alloc_count(stats.gcstats), 0, true)
+            return Base.time_print(stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
+                                   Base.gc_alloc_count(stats.gcstats), 0, true)
         else
             # format:
             # time_print(elapsedtime, bytes, gctime, allocs)
-            Base.time_print(stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
-                            Base.gc_alloc_count(stats.gcstats))
+            return Base.time_print(stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
+                                   Base.gc_alloc_count(stats.gcstats))
         end
     end
 else
@@ -47,8 +47,8 @@ else
     function print_timed(stats::Tuple; io::IO=stdout)
         # format:
         # time_print(elapsedtime, bytes, gctime, allocs)
-        Base.time_print(stats[2] * 1e9, stats[3], stats[4] * 1e9,
-                        Base.gc_alloc_count(stats[5]))
+        return Base.time_print(stats[2] * 1e9, stats[3], stats[4] * 1e9,
+                               Base.gc_alloc_count(stats[5]))
     end
 end
 
