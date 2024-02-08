@@ -9,5 +9,6 @@ include("Distribution/Distribution.jl")
 include("Subtypes/Subtypes.jl")
 include("Arrays/Arrays.jl")
 include("Timing/Timing.jl")
+include("CurrentPath/CurrentPath.jl")
 
 end  # module

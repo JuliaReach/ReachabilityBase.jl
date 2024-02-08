@@ -13,7 +13,9 @@ makedocs(; sitename="ReachabilityBase.jl",
                   ReachabilityBase.Arrays, ReachabilityBase.Timing],
          pagesonly=true,
          pages=["Home" => "index.md",
-                "Library" => Any["Assertions" => "lib/Assertions.md",
+                "Library" => Any[
+                                 #
+                                 "Assertions" => "lib/Assertions.md",
                                  "Require" => "lib/Require.md",
                                  "Comparison" => "lib/Comparison.md",
                                  "Iteration" => "lib/Iteration.md",
@@ -21,7 +23,10 @@ makedocs(; sitename="ReachabilityBase.jl",
                                  "Distribution" => "lib/Distribution.md",
                                  "Subtypes" => "lib/Subtypes.md",
                                  "Arrays" => "lib/Arrays.md",
-                                 "Timing" => "lib/Timing.md"],
+                                 "Timing" => "lib/Timing.md",
+                                 "CurrentPath" => "lib/CurrentPath.md"
+                                 #
+                                 ],
                 "About" => "about.md"],
          doctest=false)
 
