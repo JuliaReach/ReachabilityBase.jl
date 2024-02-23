@@ -42,3 +42,5 @@ if VERSION > v"1.6"
         doctest(ReachabilityBase)
     end
 end
+
+include("Aqua.jl")
