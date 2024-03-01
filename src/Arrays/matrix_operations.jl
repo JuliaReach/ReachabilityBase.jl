@@ -28,7 +28,7 @@ function issquare(M::AbstractMatrix)
     return m == n
 end
 
-function issquare(M::Diagonal)
+function issquare(::Diagonal)
     return true
 end
 
@@ -273,7 +273,7 @@ end
 
 # fallback: represent the projection matrix as a sparse array
 function projection_matrix(block::AbstractVector{Int}, n::Int,
-                           VN::Type{<:AbstractVector{N}}) where {N}
+                           ::Type{<:AbstractVector{N}}) where {N}
     return projection_matrix(block, n, N)
 end
 

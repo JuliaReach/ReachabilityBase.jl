@@ -20,7 +20,7 @@ function rand(rng::AbstractRNG, U::DefaultUniform)
 end
 
 function rand(rng::AbstractRNG, U::DefaultUniform, n::Int)
-    return [rand(rng, U) for i in 1:n]
+    return [rand(rng, U) for _ in 1:n]
 end
 
 function rand(rng::AbstractRNG, U::AbstractVector{<:DefaultUniform})
@@ -28,7 +28,7 @@ function rand(rng::AbstractRNG, U::AbstractVector{<:DefaultUniform})
 end
 
 function rand!(x, rng::AbstractRNG, U::DefaultUniform)
-    @inbounds for i in eachindex(x)
+    @inbounds for _ in eachindex(x)
         x[i] = rand(rng, U)
     end
     return x
