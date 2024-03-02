@@ -110,8 +110,8 @@ matrix_type(MT::Type{<:AbstractMatrix{T}}) where {T} = MT
 matrix_type(::Type{<:AbstractSparseVector{T}}) where {T} = SparseMatrixCSC{T,Int}
 
 # matrix constructors
-_matrix(m, n, MT::Type{<:AbstractMatrix{T}}) where {T} = Matrix{T}(undef, m, n)
-_matrix(m, n, MT::Type{<:SparseMatrixCSC{T}}) where {T} = spzeros(T, m, n)
+_matrix(m, n, ::Type{<:AbstractMatrix{T}}) where {T} = Matrix{T}(undef, m, n)
+_matrix(m, n, ::Type{<:SparseMatrixCSC{T}}) where {T} = spzeros(T, m, n)
 
 """
     to_matrix(vectors::AbstractVector{VN},

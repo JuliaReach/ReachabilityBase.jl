@@ -75,6 +75,6 @@ function Base.iterate(sii::StrictlyIncreasingIndices, state::AbstractVector{Int}
 end
 
 # termination
-function Base.iterate(sii::StrictlyIncreasingIndices, state::Nothing)
+function Base.iterate(::StrictlyIncreasingIndices, ::Nothing)
     return nothing
 end

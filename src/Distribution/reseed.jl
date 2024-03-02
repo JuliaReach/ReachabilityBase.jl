@@ -23,6 +23,6 @@ function reseed!(rng::AbstractRNG, seed::Int)
     return seed!(rng, seed)
 end
 
-function reseed!(rng::AbstractRNG, seed::Nothing)
+function reseed!(rng::AbstractRNG, ::Nothing)
     return rng
 end

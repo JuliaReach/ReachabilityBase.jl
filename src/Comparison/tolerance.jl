@@ -62,24 +62,24 @@ end
 # global Float64 tolerances
 const _TOL_F64 = default_tolerance(Float64)
 
-_rtol(N::Type{Float64}) = _TOL_F64.rtol
-_ztol(N::Type{Float64}) = _TOL_F64.ztol
-_atol(N::Type{Float64}) = _TOL_F64.atol
+_rtol(::Type{Float64}) = _TOL_F64.rtol
+_ztol(::Type{Float64}) = _TOL_F64.ztol
+_atol(::Type{Float64}) = _TOL_F64.atol
 
-set_rtol(N::Type{Float64}, ε::Float64) = _TOL_F64.rtol = ε
-set_ztol(N::Type{Float64}, ε::Float64) = _TOL_F64.ztol = ε
-set_atol(N::Type{Float64}, ε::Float64) = _TOL_F64.atol = ε
+set_rtol(::Type{Float64}, ε::Float64) = _TOL_F64.rtol = ε
+set_ztol(::Type{Float64}, ε::Float64) = _TOL_F64.ztol = ε
+set_atol(::Type{Float64}, ε::Float64) = _TOL_F64.atol = ε
 
 # global rational tolerances
 const _TOL_RAT = default_tolerance(Rational)
 
-_rtol(N::Type{<:Rational}) = _TOL_RAT.rtol
-_ztol(N::Type{<:Rational}) = _TOL_RAT.ztol
-_atol(N::Type{<:Rational}) = _TOL_RAT.atol
+_rtol(::Type{<:Rational}) = _TOL_RAT.rtol
+_ztol(::Type{<:Rational}) = _TOL_RAT.ztol
+_atol(::Type{<:Rational}) = _TOL_RAT.atol
 
-set_rtol(N::Type{<:Rational}, ε::Rational) = _TOL_RAT.rtol = ε
-set_ztol(N::Type{<:Rational}, ε::Rational) = _TOL_RAT.ztol = ε
-set_atol(N::Type{<:Rational}, ε::Rational) = _TOL_RAT.atol = ε
+set_rtol(::Type{<:Rational}, ε::Rational) = _TOL_RAT.rtol = ε
+set_ztol(::Type{<:Rational}, ε::Rational) = _TOL_RAT.ztol = ε
+set_atol(::Type{<:Rational}, ε::Rational) = _TOL_RAT.atol = ε
 
 # global default tolerances for other numeric types
 TOL_N = Dict{Type{<:Number},Tolerance}()

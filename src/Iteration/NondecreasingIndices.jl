@@ -82,6 +82,6 @@ function Base.iterate(ndi::NondecreasingIndices, state::AbstractVector{Int})
 end
 
 # termination
-function Base.iterate(ndi::NondecreasingIndices, state::Nothing)
+function Base.iterate(::NondecreasingIndices, ::Nothing)
     return nothing
 end
