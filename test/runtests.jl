@@ -21,6 +21,9 @@ end
 @testset "Comparison" begin
     include("Comparison/comparison.jl")
 end
+@testset "CurrentPath" begin
+    include("CurrentPath/CurrentPath.jl")
+end
 @testset "Distribution" begin
     include("Distribution/reseed.jl")
 end
