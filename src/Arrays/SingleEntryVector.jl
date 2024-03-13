@@ -84,3 +84,24 @@ end
 function prepend_zeros(e::SingleEntryVector, n::Int)
     return SingleEntryVector(e.i + n, e.n + n, e.v)
 end
+
+# distance = norm of the difference ||x - y||_p
+function distance(e1::SingleEntryVector{N}, e2::SingleEntryVector{N}; p::Real=N(2)) where {N}
+    if e1.n != e2.n
+        throw(DimensionMismatch("dimensions must match, but they are " *
+                                "$(length(e1)) and $(length(e2)) respectively"))
+    end
+
+    if e1.i == e2.i
+        return abs(e1.v - e2.v)
+    else
+        a = abs(e1.v)
+        b = abs(e2.v)
+        if isinf(p)
+            return max(a, b)
+        else
+            s = a^p + b^p
+            return s^(1 / p)
+        end
+    end
+end
