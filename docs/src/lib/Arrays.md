@@ -15,7 +15,7 @@ CurrentModule = ReachabilityBase.Arrays
 Arrays
 argmaxabs
 cross_product(::AbstractMatrix{N}) where {N<:Real}
-distance(::AbstractVector, ::AbstractVector; ::Real=2.0)
+distance(::AbstractVector{N}, ::AbstractVector{N}; ::Real=N(2)) where {N}
 dot_zero
 extend
 extend_with_zeros
