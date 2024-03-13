@@ -17,6 +17,9 @@ seed!(1234)  # fix RNG seed for reproducibility
     @testset "vector_operations" begin
         include("Arrays/vector_operations.jl")
     end
+    @testset "SingleEntryVector" begin
+        include("Arrays/SingleEntryVector.jl")
+    end
 end
 @testset "Comparison" begin
     include("Comparison/comparison.jl")
