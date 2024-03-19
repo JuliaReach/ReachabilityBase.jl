@@ -23,9 +23,9 @@ end
 # max_j a_jj + ∑_{i ≠ j} |a_ij|
 function logarithmic_norm_1(A::AbstractMatrix{N}) where {N}
     out = -Inf
-    @inbounds for j in 1:size(A, 2)
+    @inbounds for j in axes(A, 2)
         α = A[j, j]
-        for i in 1:size(A, 1)
+        for i in axes(A, 1)
             if i ≠ j
                 α += abs(A[i, j])
             end
@@ -40,9 +40,9 @@ end
 # max_i a_ii + ∑_{j ≠ i} |a_ij|
 function logarithmic_norm_inf(A::AbstractMatrix{N}) where {N}
     out = -Inf
-    @inbounds for i in 1:size(A, 1)
+    @inbounds for i in axes(A, 1)
         α = A[i, i]
-        for j in 1:size(A, 2)
+        for j in axes(A, 2)
             if i ≠ j
                 α += abs(A[i, j])
             end
