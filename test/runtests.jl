@@ -31,6 +31,9 @@ end
     @testset "StrictlyIncreasingIndices" begin
         include("Iteration/StrictlyIncreasingIndices.jl")
     end
+    @testset "CartesianIterator" begin
+        include("Iteration/CartesianIterator.jl")
+    end
 end
 @testset "Timing" begin
     include("Timing/timing.jl")
