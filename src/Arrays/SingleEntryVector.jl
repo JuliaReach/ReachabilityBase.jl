@@ -45,6 +45,28 @@ function Base.:(-)(e::SingleEntryVector{N}) where {N}
     return SingleEntryVector(e.i, e.n, -e.v)
 end
 
+# arithmetic
+for (opS, opF) in ((:(+), +), (:(-), -))
+    @eval begin
+        function Base.$opS(e1::SingleEntryVector{N}, e2::SingleEntryVector{N}) where {N}
+            if e1.n != e2.n
+                throw(DimensionMismatch("dimensions must match, but they are $(length(e1)) and $(length(e2)) respectively"))
+            end
+
+            if e1.i == e2.i
+                return SingleEntryVector(e1.i, e1.n, $opF(e1.v, e2.v))
+            else
+                res = spzeros(N, e1.n)
+                @inbounds begin
+                    res[e1.i] = e1.v
+                    res[e2.i] = $opF(e2.v)
+                end
+                return res
+            end
+        end
+    end
+end
+
 function inner(e1::SingleEntryVector{N}, A::AbstractMatrix{N},
                e2::SingleEntryVector{N}) where {N}
     return A[e1.i, e2.i] * e1.v * e2.v
