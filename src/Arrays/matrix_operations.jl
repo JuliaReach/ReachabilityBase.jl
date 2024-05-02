@@ -154,24 +154,26 @@ cross_product(M::AbstractSparseMatrix) = cross_product(Matrix(M))
 cross_product(M::SubArray{N,2,<:AbstractSparseMatrix}) where {N} = cross_product(Matrix(M))
 
 """
-    nonzero_columns(A::AbstractMatrix)
+    nonzero_columns(A::AbstractMatrix; [comparison]=isapproxzero)
 
 Return all columns that have at least one non-zero entry.
 
 ### Input
 
-- `A` -- matrix
+- `A`          -- matrix
+- `comparison` -- (optional; default: `isapproxzero`) function to check for
+                  equality with zero
 
 ### Output
 
 A vector of indices.
 """
-function nonzero_columns(A::AbstractMatrix)
+function nonzero_columns(A::AbstractMatrix; comparison=isapproxzero)
     n = size(A, 2)
     nzcol = Vector{Int}()
     sizehint!(nzcol, n)
     for j in 1:n
-        if !iszero(view(A, :, j))
+        if !all(comparison, view(A, :, j))
             push!(nzcol, j)
         end
     end

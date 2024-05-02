@@ -36,6 +36,8 @@ for N in [Float64, Rational{Int}, Float32]
     @test remove_zero_columns(sparse(A)) == A
     B = N[1 0 2; 3 0 4]
     @test remove_zero_columns(B) == remove_zero_columns(sparse(B)) == A
+    C = N[1e-16 0; 0 -1e-16]
+    @test remove_zero_columns(C) == (N <: AbstractFloat ? zeros(N, 2, 0) : C)
 
     # substitution
     x = N[1, 2, 3]
