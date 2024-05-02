@@ -18,4 +18,13 @@ for N in [Float64, Float32, Rational{Int}]
     res = x - z
     w = zeros(N, 100); w[1] = N(10); w[2] = N(6)
     @test res == w
+
+    x = SingleEntryVector(1, 100, N(-1))
+    y = SingleEntryVector(1, 100, N(-3))
+    z = SingleEntryVector(2, 100, N(-6))
+
+    # distance
+    @test distance(x, y) == distance(x, y; p=N(2)) == distance(x, y; p=N(Inf)) == N(2)
+    @test distance(x, z) == distance(x, z; p=N(2)) ≈ sqrt(N(37))
+    @test distance(x, z; p=N(Inf)) == N(6)
 end
