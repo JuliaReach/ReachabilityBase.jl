@@ -10,5 +10,6 @@ include("Subtypes/Subtypes.jl")
 include("Arrays/Arrays.jl")
 include("Timing/Timing.jl")
 include("CurrentPath/CurrentPath.jl")
+include("Basetype/Basetype.jl")
 
 end  # module

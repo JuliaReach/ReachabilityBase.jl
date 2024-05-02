@@ -24,7 +24,8 @@ makedocs(; sitename="ReachabilityBase.jl",
                                  "Subtypes" => "lib/Subtypes.md",
                                  "Arrays" => "lib/Arrays.md",
                                  "Timing" => "lib/Timing.md",
-                                 "CurrentPath" => "lib/CurrentPath.md"
+                                 "CurrentPath" => "lib/CurrentPath.md",
+                                 "Basetype" => "lib/Basetype.md"
                                  #
                                  ],
                 "About" => "about.md"],
