@@ -9,13 +9,13 @@ module CurrentPath
 export @current_path
 
 """
-   @current_path(prefix, filename)
+   @current_path([prefix], filename)
 
 Return the absolute path to file `filename` relative to the executing script.
 
 ### Input
 
-- `prefix`   -- path prefix (ignored by default)
+- `prefix`   -- path prefix (optional; ignored by default)
 - `filename` -- filename
 
 ### Output
@@ -55,6 +55,15 @@ macro current_path(prefix::String, filename::String)
 end
 ```
 """
+macro current_path end
+
+macro current_path(filename::String)
+    __source__.file === nothing && return nothing
+    _dirname = dirname(String(__source__.file))
+    dir = isempty(_dirname) ? pwd() : abspath(_dirname)
+    return joinpath(dir, filename)
+end
+
 macro current_path(prefix::String, filename::String)
     __source__.file === nothing && return nothing
     _dirname = dirname(String(__source__.file))
