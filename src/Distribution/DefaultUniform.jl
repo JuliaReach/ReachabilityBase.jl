@@ -28,7 +28,7 @@ function rand(rng::AbstractRNG, U::AbstractVector{<:DefaultUniform})
 end
 
 function rand!(x, rng::AbstractRNG, U::DefaultUniform)
-    @inbounds for _ in eachindex(x)
+    @inbounds for i in eachindex(x)
         x[i] = rand(rng, U)
     end
     return x
