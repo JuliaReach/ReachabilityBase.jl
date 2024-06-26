@@ -7,13 +7,12 @@ module Iteration
 
 using SparseArrays
 
-export EmptyIterator, SingletonIterator, VectorIterator,
+export EmptyIterator, SingletonIterator,
        StrictlyIncreasingIndices, NondecreasingIndices, BitvectorIterator,
        CartesianIterator
 
 include("EmptyIterator.jl")
 include("SingletonIterator.jl")
-include("VectorIterator.jl")
 include("StrictlyIncreasingIndices.jl")
 include("NondecreasingIndices.jl")
 include("BitvectorIterator.jl")
