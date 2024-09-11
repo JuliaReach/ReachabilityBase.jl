@@ -6,7 +6,7 @@ the [`Requires.jl`](https://github.com/JuliaPackaging/Requires.jl) package.
 """
 module Require
 
-export require
+export require, @required
 
 """
     require(mod, packages; [fun_name]::String="", [explanation]::String="")
@@ -27,21 +27,21 @@ them is not loaded.
 ### Output
 
 If all packages are loaded, this function has no effect.
-Otherwise it prints an error message.
+Otherwise, it prints an error message.
 
 ### Notes
 
-The argument `mod` should always be `@__MODULE__`, but since this is a macro, it
-has to be inserted by the caller.
+The argument `mod` should typically be `@__MODULE__`, but since this is a macro,
+it has to be inserted by the caller.
 
 The argument `require_all` can be set to `false` to require only one of the
 given packages. This is useful if multiple packages provide a functionality and
 any of them is fine.
 
-### Algorithm
-
 This function uses `@assert` and hence loses its ability to print an error
 message if assertions are deactivated (see the `Assertions` module).
+
+See also the [`@required`](@ref) macro for a more concise syntax.
 """
 function require end
 
@@ -72,6 +72,29 @@ function require(mod, packages::AbstractVector{Symbol}; fun_name::String="",
                                                                       (explanation == "" ? "" :
                                                                        " " * explanation) * ")")
     end
+end
+
+"""
+    @required(package)
+
+Check for an optional package and print an error message if any of them is not loaded.
+
+### Input
+
+- `package` -- package name
+
+### Output
+
+If the package is loaded, this macro has no effect. Otherwise, it prints an error message.
+
+This macro uses `@assert` and hence loses its ability to print an error message if assertions are
+deactivated (see the `Assertions` module).
+
+See also the [`require`](@ref) function for a more customizable version.
+"""
+macro required(package)
+    p = Meta.quot(Symbol(package))
+    return esc(:(@assert isdefined(@__MODULE__, $p) "package `$($p)` not loaded"))
 end
 
 end  # module
