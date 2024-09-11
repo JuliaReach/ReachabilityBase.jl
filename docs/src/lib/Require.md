@@ -14,4 +14,5 @@ CurrentModule = ReachabilityBase.Require
 ```@docs
 Require
 require
+@required
 ```
