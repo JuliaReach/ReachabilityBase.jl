@@ -28,8 +28,7 @@ makedocs(; sitename="ReachabilityBase.jl",
                                  "Basetype" => "lib/Basetype.md"
                                  #
                                  ],
-                "About" => "about.md"],
-         doctest=false)
+                "About" => "about.md"])
 
 deploydocs(; repo="github.com/JuliaReach/ReachabilityBase.jl.git",
            push_preview=true)
