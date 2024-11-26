@@ -20,7 +20,14 @@ Print the result of a `@timed` call.
 """
 @static if VERSION >= v"1.5"
     function print_timed(stats::NamedTuple; io::IO=stdout)
-        @static if VERSION >= v"1.10"
+        @static if VERSION >= v"1.11"
+            # format:
+            # time_print(io::IO, elapsedtime, bytes, gctime, allocs, lock_conflicts,
+            #            compile_time, recompile_time, newline)
+            return Base.time_print(io, stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
+                                   Base.gc_alloc_count(stats.gcstats), stats.lock_conflicts,
+                                   stats.compile_time, stats.recompile_time, true)
+        elseif VERSION >= v"1.10"
             # format:
             # time_print(io::IO, elapsedtime, bytes, gctime, allocs, compile_time, recompile_time, newline)
             return Base.time_print(io, stats.time * 1e9, stats.bytes, stats.gctime * 1e9,
