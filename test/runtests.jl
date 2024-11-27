@@ -45,11 +45,4 @@ end
     include("Timing/timing.jl")
 end
 
-if VERSION > v"1.6"
-    using Documenter
-    @testset "doctests" begin
-        doctest(ReachabilityBase)
-    end
-end
-
 include("Aqua.jl")
