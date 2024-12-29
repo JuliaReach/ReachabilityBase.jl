@@ -87,23 +87,17 @@ _rtol(N::Type{<:Number})::N = get!(TOL_N, N, default_tolerance(N)).rtol
 _ztol(N::Type{<:Number})::N = get!(TOL_N, N, default_tolerance(N)).ztol
 _atol(N::Type{<:Number})::N = get!(TOL_N, N, default_tolerance(N)).atol
 
-set_rtol(N::Type{NT}, ε::NT) where {NT<:Number} = begin
-    if N ∉ keys(TOL_N)
-        TOL_N[N] = default_tolerance(N)
-    end
-    TOL_N[N].rtol = ε
+function set_rtol(N::Type{NT}, ε::NT) where {NT<:Number}
+    tol = get!(TOL_N, N, default_tolerance(N))
+    tol.rtol = ε
 end
 
-set_ztol(N::Type{NT}, ε::NT) where {NT<:Number} = begin
-    if N ∉ keys(TOL_N)
-        TOL_N[N] = default_tolerance(N)
-    end
-    TOL_N[N].ztol = ε
+function set_ztol(N::Type{NT}, ε::NT) where {NT<:Number}
+    tol = get!(TOL_N, N, default_tolerance(N))
+    tol.ztol = ε
 end
 
-set_atol(N::Type{NT}, ε::NT) where {NT<:Number} = begin
-    if N ∉ keys(TOL_N)
-        TOL_N[N] = default_tolerance(N)
-    end
-    TOL_N[N].atol = ε
+function set_atol(N::Type{NT}, ε::NT) where {NT<:Number}
+    tol = get!(TOL_N, N, default_tolerance(N))
+    tol.atol = ε
 end
