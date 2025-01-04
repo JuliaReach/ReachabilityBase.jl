@@ -89,15 +89,15 @@ _atol(N::Type{<:Number})::N = get!(TOL_N, N, default_tolerance(N)).atol
 
 function set_rtol(N::Type{NT}, ε::NT) where {NT<:Number}
     tol = get!(TOL_N, N, default_tolerance(N))
-    tol.rtol = ε
+    return tol.rtol = ε
 end
 
 function set_ztol(N::Type{NT}, ε::NT) where {NT<:Number}
     tol = get!(TOL_N, N, default_tolerance(N))
-    tol.ztol = ε
+    return tol.ztol = ε
 end
 
 function set_atol(N::Type{NT}, ε::NT) where {NT<:Number}
     tol = get!(TOL_N, N, default_tolerance(N))
-    tol.atol = ε
+    return tol.atol = ε
 end
