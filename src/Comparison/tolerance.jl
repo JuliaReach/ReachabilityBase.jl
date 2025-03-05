@@ -56,7 +56,8 @@ end
 function set_tolerance(N, tolerance::Tolerance=default_tolerance(N))
     set_rtol(N, tolerance.rtol)
     set_ztol(N, tolerance.ztol)
-    return set_atol(N, tolerance.atol)
+    set_atol(N, tolerance.atol)
+    return tolerance
 end
 
 # global Float64 tolerances
