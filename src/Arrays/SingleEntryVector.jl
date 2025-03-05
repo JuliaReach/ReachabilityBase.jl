@@ -19,7 +19,7 @@ end
 SingleEntryVector{N}(i::Int, n::Int) where {N} = SingleEntryVector{N}(i, n, one(N))
 
 function Base.getindex(e::SingleEntryVector{N}, i::Int) where {N}
-    @boundscheck @assert 1 <= i <= e.n
+    @boundscheck 1 <= i <= e.n || throw(BoundsError(e, i))
     return i == e.i ? e.v : zero(N)
 end
 

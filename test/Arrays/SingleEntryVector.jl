@@ -5,6 +5,14 @@ for N in [Float64, Float32, Rational{Int}]
     y = SingleEntryVector(1, 100, N(3))
     z = SingleEntryVector(2, 100, N(-6))
 
+    # getindex
+    e = x[1]
+    @test e isa N && e == N(10)
+    e = x[2]
+    @test e isa N && e == zero(N)
+    @test_throws BoundsError x[0]
+    @test_throws BoundsError x[101]
+
     # addition
     res = x + y
     @test res == SingleEntryVector(1, 100, N(13)) && typeof(res) == SingleEntryVector{N}
