@@ -5,7 +5,7 @@ This module provides machinery for vectors and matrices.
 """
 module Arrays
 
-using LinearAlgebra, Requires, SparseArrays
+using LinearAlgebra, SparseArrays
 import LinearAlgebra: rank
 
 using Random: AbstractRNG, GLOBAL_RNG
