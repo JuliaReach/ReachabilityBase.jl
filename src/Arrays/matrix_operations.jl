@@ -1,10 +1,10 @@
 # default tolerance for matrix condition number (see 'isinvertible')
 const DEFAULT_COND_TOL = 1e6
 
-# matrix-matrix multiplication
+# matrix-matrix or matrix-vector multiplication
 @inline At_mul_B(A, B) = transpose(A) * B
 
-# matrix-matrix division
+# matrix-matrix  or matrix-vector division
 @inline At_ldiv_B(A, B) = transpose(A) \ B
 
 # rank of sparse submatrix (see #1497)
