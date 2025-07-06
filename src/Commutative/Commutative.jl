@@ -26,8 +26,10 @@ swapped.
 A quoted expression containing the method definitions.
 """
 macro commutative(f)
-    # split the expression of the method definition
-    def = splitdef(f)
+    return commutative(splitdef(f), f)
+end
+
+function commutative(def, f1=nothing)
     defswap = deepcopy(def)
 
     # swap arguments 1 and 2
@@ -35,10 +37,13 @@ macro commutative(f)
     defswap[:args][1] = defswap[:args][2]
     defswap[:args][2] = aux
 
-    _f = combinedef(defswap)
+    if isnothing(f1)
+        f1 = combinedef(def)
+    end
+    f2 = combinedef(defswap)
     return quote
-        Core.@__doc__ $(esc(f))
-        $(esc(_f))
+        Core.@__doc__ $(esc(f1))
+        $(esc(f2))
     end
 end
 
