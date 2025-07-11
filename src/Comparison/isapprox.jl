@@ -22,15 +22,15 @@ A boolean that is `true` iff `x ≈ y`.
 ### Algorithm
 
 We first check if `x` and `y` are both approximately zero, using
-`isapproxzero(x, y)`.
+`isapproxzero(x) && isapproxzero(y)`.
 If that fails, we check if `x ≈ y`, using Julia's `isapprox(x, y)`.
 In the latter check we use `atol` absolute tolerance and `rtol` relative
 tolerance.
 
 Comparing to zero with default tolerances is a special case in Julia's
 `isapprox`, see the last paragraph in `?isapprox`. This function tries to
-combine `isapprox` with its default values and a branch for `x ≈ y ≈ 0` which
-includes `x == y == 0` but also admits a tolerance `ztol`.
+combine `isapprox` with its default values and a branch for `x ≈ 0 ≈ y` which
+includes `x == 0 == y` but also admits a tolerance `ztol`.
 
 Note that if `x = ztol` and `y = -ztol`, then `|x-y| = 2*ztol` and still
 `_isapprox` returns `true`.
