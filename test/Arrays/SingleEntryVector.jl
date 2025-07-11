@@ -39,4 +39,20 @@ for N in [Float64, Float32, Rational{Int}]
     @test distance(x, y) == distance(x, y; p=N(2)) == distance(x, y; p=N(Inf)) == N(2)
     @test distance(x, z) == distance(x, z; p=N(2)) ≈ sqrt(N(37))
     @test distance(x, z; p=N(Inf)) == N(6)
+
+    # At_mul_B
+    x = SingleEntryVector(2, 3, N(-2))
+    @test_throws DimensionMismatch At_mul_B(N[1 2; 3 4], x)
+    @test_throws DimensionMismatch At_mul_B(x, N[1 2; 3 4])
+    for y in (At_mul_B(N[1 2; 3 4; 5 6], x), At_mul_B(x, N[1 2; 3 4; 5 6]))
+        @test y isa Vector{N} && y == N[-6, -8]
+    end
+    y = SingleEntryVector(1, 4, N(3))
+    @test_throws DimensionMismatch At_mul_B(x, y)
+    y = SingleEntryVector(1, 3, N(3))
+    z = At_mul_B(x, y)
+    @test z isa Vector{N} && z == N[0]
+    y = SingleEntryVector(2, 3, N(3))
+    z = At_mul_B(x, y)
+    @test z isa Vector{N} && z == N[-6]
 end

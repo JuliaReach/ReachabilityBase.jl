@@ -105,3 +105,38 @@ function distance(e1::SingleEntryVector{N}, e2::SingleEntryVector{N}; p::Real=N(
         end
     end
 end
+
+# matrix-vector multiplication
+@inline function At_mul_B(A, b::SingleEntryVector)
+    if size(A, 1) != length(b)
+        throw(DimensionMismatch("dimensions must match, but they are " *
+                                "$(size(A)) and $(length(b)) respectively"))
+    end
+
+    return @view(A[b.i, :]) .* b.v
+end
+
+# vector-matrix multiplication
+@inline function At_mul_B(a::SingleEntryVector, B)
+    if length(a) != size(B, 1)
+        throw(DimensionMismatch("dimensions must match, but they are " *
+                                "$(length(a)) and $(size(B)) respectively"))
+    end
+
+    return a.v * @view(B[a.i, :])
+end
+
+# vector-vector multiplication
+@inline function At_mul_B(a::SingleEntryVector, b::SingleEntryVector)
+    if length(a) != length(b)
+        throw(DimensionMismatch("dimensions must match, but they are " *
+                                "$(length(a)) and $(length(b)) respectively"))
+    end
+
+    if a.i == b.i
+        return [a.v * b.v]
+    else
+        N = promote_type(eltype(a), eltype(b))
+        return [zero(N)]
+    end
+end
