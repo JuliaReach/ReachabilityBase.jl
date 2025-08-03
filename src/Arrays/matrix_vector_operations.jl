@@ -1,43 +1,26 @@
-# computes ‖a^T G‖₁
-@inline function abs_sum(a::AbstractVector, G::AbstractMatrix)
-    @assert length(a) == size(G, 1) "invalid dimensions $(length(a)) and $(size(G))"
+# computes ‖xᵀ M‖₁
+@inline function abs_sum(x::AbstractVector, M::AbstractMatrix)
+    @assert length(x) == size(M, 1) "invalid dimensions $(length(x)) and $(size(M))"
 
-    n, p = size(G)
-    N = promote_type(eltype(a), eltype(G))
+    n, p = size(M)
+    N = promote_type(eltype(x), eltype(M))
     res = zero(N)
     @inbounds for j in 1:p
         aux = zero(N)
         @simd for i in 1:n
-            aux += a[i] * G[i, j]
+            aux += x[i] * M[i, j]
         end
         res += abs(aux)
     end
     return res
 end
 
-# computes ‖a^T G‖₁ for `a` being a sparse vector
-@inline function abs_sum(a::AbstractSparseVector, G::AbstractMatrix)
-    return sum(abs, transpose(a) * G)
-end
-
-# computes ‖a^T G‖₁ for `a` having only one nonzero element
-@inline function abs_sum(a::SingleEntryVector, G::AbstractMatrix)
-    @assert length(a) == size(G, 1) "invalid dimensions $(length(a)) and $(size(G))"
-
-    p = size(G, 2)
-    i = a.i
-    N = promote_type(eltype(a), eltype(G))
-    res = zero(N)
-    @inbounds for j in 1:p
-        res += abs(G[i, j])
-    end
-    res *= abs(a.v)
-    return res
+@inline function abs_sum(x::AbstractSparseVector, M::AbstractMatrix)
+    return sum(abs, transpose(x) * M)
 end
 
 """
-    inner(x::AbstractVector{N}, A::AbstractMatrix{N}, y::AbstractVector{N}
-         ) where {N}
+    inner(x::AbstractVector{N}, A::AbstractMatrix{N}, y::AbstractVector{N}) where {N}
 
 Compute the inner product ``xᵀ A y``.
 
