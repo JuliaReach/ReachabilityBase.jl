@@ -5,6 +5,9 @@ using Random: GLOBAL_RNG, seed!
 seed!(1234)  # fix RNG seed for reproducibility
 
 @testset "Arrays" begin
+    @testset "SingleEntryVector" begin
+        include("Arrays/SingleEntryVector.jl")
+    end
     @testset "array_operations" begin
         include("Arrays/array_operations.jl")
     end
@@ -19,9 +22,6 @@ seed!(1234)  # fix RNG seed for reproducibility
     end
     @testset "vector_operations" begin
         include("Arrays/vector_operations.jl")
-    end
-    @testset "SingleEntryVector" begin
-        include("Arrays/SingleEntryVector.jl")
     end
     @testset "logarithmic_norm" begin
         include("Arrays/logarithmic_norm.jl")
