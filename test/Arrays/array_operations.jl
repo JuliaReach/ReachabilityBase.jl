@@ -1,47 +1,55 @@
-using ReachabilityBase.Arrays
-using ReachabilityBase.Comparison
+using ReachabilityBase.Arrays, Test, SparseArrays
+using ReachabilityBase.Comparison: isidentical
 
 for N in [Float64, Float32, Rational{Int}]
-    v1 = N[0, 4, 0]
-    v2 = sparsevec(N[2], N[4], 3)
-    @test v1 == v2
-    v1a = append_zeros(v1, 2)
-    v1p = prepend_zeros(v1, 2)
-    @test v1a == append_zeros(v2, 2) == N[0, 4, 0, 0, 0]
-    @test v1p == prepend_zeros(v2, 2) == N[0, 0, 0, 4, 0]
+    # same_sign
+    @test same_sign(zeros(N, 0))
+    A = reshape(N.(collect(1:8)), 2, 2, 2)
+    @test same_sign(A)
+    @test same_sign(-A)
+    A[1, 1, 1] = -1
+    @test !same_sign(A)
+    @test !same_sign(-A)
+    A[1, 1, 1] = 1
+    A[2, 2, 2] = -8
+    @test !same_sign(A)
+    @test !same_sign(-A)
+
+    # rectify
+    A = reshape(N.(collect(1:8)), 2, 2, 2)
+    A2 = rectify(A)
+    @test isidentical(A2, A)
+    A2 = rectify(-A)
+    A3 = zeros(N, 2, 2, 2)
+    @test isidentical(A2, A3)
 
     # argmaxabs
-    @test_throws AssertionError argmaxabs(N[])
-    @test argmaxabs(N[-4, -2, 3]) == 1
-    @test argmaxabs(N[-4, 5, 3]) == 2
-    @test argmaxabs(N[1, -2, 3]) == 3
+    @test_throws ArgumentError argmaxabs(zeros(N, 0, 1, 1))
+    @test argmaxabs(N[0, 0]) == 1
+    @test argmaxabs(reshape(N[-4, -2, 4, 2], 1, 2, 2)) == 1
+    @test argmaxabs(N[-4, 5, 4]) == 2
 end
 
 for N in [Float32, Float64]
-    # rationalize
-    x = [N(1), N(2), N(3)]
-    out = [1 // 1, 2 // 1, 3 // 1]
-    @test rationalize(x) == out
-    v = rationalize(BigInt, x)
-    @test v[1] isa Rational{BigInt}
-    @test rationalize(x; tol=2 * eps(N)) == out
+    to_3d(v) = reshape(v, 1, 2, 2)
 
-    # rand_pos_neg_zerosum_vector
-    x = rand_pos_neg_zerosum_vector(10; N=N)
-    @test isapproxzero(sum(x))
-    @test length(unique(x)) == length(x)
-    # test that the order is "first all positive, then all negative entries"
-    posneg = true
-    neg = false
-    for xi in x
-        if xi > zero(N)
-            if neg
-                posneg = false
-                break
-            end
-        elseif !neg
-            neg = true
-        end
-    end
-    @test posneg
+    # rationalize
+    A = to_3d(N[1, 2, 3, 4])
+    # default: Rational{Int}
+    A2 = rationalize(A)
+    A3 = to_3d(Rational{Int}[1, 2, 3, 4])
+    @test isidentical(A2, A3)
+    # tolerance
+    A2 = rationalize(A; tol=2 * eps(N))
+    @test isidentical(A2, A3)
+    # nested arrays
+    A2 = rationalize(Int, [A, A], 2 * eps(N))
+    isidentical(A2, [A3, A3])
+    # Rational{BigInt}
+    A2 = rationalize(BigInt, A)
+    A3 = to_3d(Rational{BigInt}[1, 2, 3, 4])
+    @test isidentical(A2, A3)
+    # tolerance
+    A2 = rationalize(BigInt, A; tol=2 * eps(N))
+    @test isidentical(A2, A3)
 end
