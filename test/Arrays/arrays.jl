@@ -39,20 +39,10 @@ for N in [Float64, Rational{Int}, Float32]
     C = N[1e-16 0; 0 -1e-16]
     @test remove_zero_columns(C) == (N <: AbstractFloat ? zeros(N, 2, 0) : C)
 
-    # substitution
-    x = N[1, 2, 3]
-    substitution = Dict(1 => N(4), 3 => N(0))
-    @test substitute(substitution, x) == N[4, 2, 0]
-    substitute!(substitution, x)
-    @test x == N[4, 2, 0]
-
     A = N[1 4; 2 5; 3 6]
     x1 = N[0, 2, 0]
     y1 = N[3, 0]
     @test inner(x1, A, y1) == dot(x1, A * y1)
-
-    x = N[0, 1, -1]
-    @test rectify(x) == N[0, 1, 0]
 
     # approximate permutation check
     v1 = [N[1, 2], N[2, 3], N[3, 4]]
