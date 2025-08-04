@@ -5,13 +5,11 @@ Check whether all elements of the given array have the same sign.
 
 ### Input
 
-- `A`          -- array
-- `optimistic` -- (optional; default: `false`) flag for expressing that the
-                  expected result is `true`
+- `A` -- array
 
 ### Output
 
-`true` if and only if all elements in `A` have the same sign.
+`true` iff all elements in `A` have the same sign.
 
 ### Notes
 
@@ -44,90 +42,104 @@ function same_sign(A::AbstractArray)
 end
 
 """
-    rationalize(::Type{T}, x::AbstractArray{N}, tol::Real) where {T<:Integer, N<:AbstractFloat}
+    rationalize(::Type{T}, A::AbstractArray{N}, tol::Real) where {T<:Integer, N<:AbstractFloat}
 
-Approximate an array of floating point numbers as a rational vector with entries
+Approximate an array of floating-point numbers as an array with rational entries
 of the given integer type.
 
 ### Input
 
 - `T`   -- (optional, default: `Int`) integer type to represent the rationals
-- `x`   -- vector of floating point numbers
-- `tol` -- (optional, default: `eps(N)`) tolerance the result at entry `i`
-           will differ from `x[i]` by no more than `tol`
+- `A`   -- array of floating-point numbers
+- `tol` -- (optional, default: `eps(N)`) tolerance; the result at entry `i`
+           will differ from `A[i]` by no more than `tol`
 
 ### Output
 
 An array of type `Rational{T}` where the `i`-th entry is the rationalization
-of the `i`-th component of `x`.
+of the `i`-th component of `A`.
 
 ### Notes
 
 See also `Base.rationalize`.
 """
-function rationalize(::Type{T}, x::AbstractArray{N}, tol::Real) where {T<:Integer,N<:AbstractFloat}
-    y = Vector{Rational{T}}(undef, length(x))
-    @inbounds for (i, xi) in enumerate(x)
-        y[i] = rationalize(T, xi, tol)
+function rationalize(::Type{T}, A::AbstractArray{N}, tol::Real) where {T<:Integer,N<:AbstractFloat}
+    B = similar(A, Rational{T})
+    @inbounds for (i, Ai) in enumerate(A)
+        B[i] = rationalize(T, Ai, tol)
     end
-    return y
+    return B
 end
 
-# method extensions
-function rationalize(::Type{T}, x::AbstractArray{N};
+# `tol` as kwarg with default value
+function rationalize(::Type{T}, A::AbstractArray{N};
                      tol::Real=eps(N)) where {T<:Integer,N<:AbstractFloat}
-    return rationalize(T, x, tol)
+    return rationalize(T, A, tol)
 end
-function rationalize(x::AbstractArray{N}; kwargs...) where {N<:AbstractFloat}
-    return rationalize(Int, x; kwargs...)
+
+# no `T` with default value
+function rationalize(A::AbstractArray{N}; kwargs...) where {N<:AbstractFloat}
+    return rationalize(Int, A; kwargs...)
 end
 
 # nested vectors
-function rationalize(::Type{T}, xs::AbstractArray{<:AbstractArray{N}},
+function rationalize(::Type{T}, As::AbstractVector{<:AbstractVector{N}},
                      tol::Real) where {T<:Integer,N<:AbstractFloat}
-    ys = Vector{Vector{Rational{T}}}(undef, length(xs))
-    @inbounds for (i, xi) in enumerate(xs)
-        ys[i] = rationalize(T, xi, tol)
+    Bs = similar(As, Rational{T})
+    @inbounds for (i, Ai) in enumerate(As)
+        Bs[i] = rationalize(T, Ai, tol)
     end
-    return ys
+    return Bs
+end
+
+# nested arrays
+function rationalize(::Type{T}, A::AbstractArray{<:AbstractArray{N}},
+                     tol::Real) where {T<:Integer,N<:AbstractFloat}
+    return rationalize.(Ref(T), A, Ref(tol))
 end
 
 """
-    rectify(x::AbstractArray{N}) where {N<:Real}
+    rectify(A::AbstractArray)
 
 Rectify an array, i.e., take the element-wise maximum with zero.
 
 ### Input
 
-- `x` -- array
+- `A` -- array
 
 ### Output
 
 A copy of the array where each negative entry is replaced by zero.
 """
-function rectify(x::AbstractArray{N}) where {N<:Real}
-    return map(xi -> max(xi, zero(N)), x)
+function rectify(A::AbstractArray)
+    B = similar(A)
+    z = zero(eltype(A))
+    @inbounds for i in eachindex(A)
+        B[i] = max(A[i], z)
+    end
+    return B
 end
 
 """
-    argmaxabs(x::AbstractArray)
+    argmaxabs(A::AbstractArray)
 
-Return the index with the absolute-wise maximum entry.
+Return the first index with the absolute-wise maximum entry.
 
 ### Input
 
-- `x` -- array
+- `A` -- array
 
 ### Output
 
-The index `i` such that `|x[i]| >= |x[j]|` for all `j`.
+The first (wrt. `eachindex`) index `i` such that `|A[i]| >= |A[j]|` for all `j`.
 """
-function argmaxabs(x::AbstractArray)
-    @assert length(x) > 0 "cannot find the absolute argmax in an empty array"
-    res = zero(eltype(x))
+function argmaxabs(A::AbstractArray)
+    @assert !isempty(A) || throw(ArgumentError("cannot find the absolute argmax in an empty array"))
+
+    res = zero(eltype(A))
     idx = 1
-    @inbounds for i in eachindex(x)
-        v = abs(x[i])
+    @inbounds for i in eachindex(A)
+        v = abs(A[i])
         if v > res
             res = v
             idx = i
