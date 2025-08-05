@@ -123,3 +123,127 @@ function argmaxabs(A::AbstractArray)
     end
     return idx
 end
+
+"""
+    nonzero_indices(A::AbstractArray)
+
+Return the indices in which an array is non-zero.
+
+### Input
+
+- `A` -- array
+
+### Output
+
+The vector of indices `i` such that `A[i] ≠ 0`. The order of the indices follows `eachindex`, i.e.,
+typically in ascending order.
+
+For a `SparseVector` input, mutating the result will mutate `A`.
+"""
+function nonzero_indices(A::AbstractArray)
+    res = Vector{Int}()
+    @inbounds for i in eachindex(A)
+        if !iszero(A[i])
+            push!(res, i)
+        end
+    end
+    return res
+end
+
+# sparse vector
+function nonzero_indices(v::SparseVector)
+    return v.nzind
+end
+
+# if `A` has exactly one non-zero entry, return its index
+# otherwise, return 0
+function find_unique_nonzero_entry(A::AbstractArray)
+    res = 0
+    @inbounds for i in eachindex(A)
+        if !iszero(A[i])
+            if res != 0
+                # at least two non-zero entries
+                return 0
+            else
+                # first non-zero entry so far
+                res = i
+            end
+        end
+    end
+    return res
+end
+
+"""
+    substitute(substitution::Dict{Int,T}, A::AbstractArray{T}) where {T}
+
+Apply a substitution to a given mutable array.
+
+### Input
+
+- `substitution` -- mapping from an index to a new value
+- `A`            -- mutable array
+
+### Output
+
+A fresh array corresponding to `A` after `substitution` was applied.
+
+The same (but see the Notes below) array `A` but after `substitution` was
+applied.
+"""
+function substitute(substitution::Dict{Int,T}, A::AbstractArray{T}) where {T}
+    return substitute!(substitution, copy(A))
+end
+
+"""
+    substitute!(substitution::Dict{Int,T}, A::AbstractArray{T}) where {T}
+
+Apply a substitution to a given mutable array, in-place.
+
+### Input
+
+- `substitution` -- mapping from an index to a new value
+- `A`            -- mutable array (modified in this function)
+
+### Output
+
+The same array `A` but after `substitution` was applied.
+"""
+function substitute!(substitution::Dict{Int,T}, A::AbstractArray{T}) where {T}
+    for (idx, v) in substitution
+        A[idx] = v
+    end
+    return A
+end
+
+@static if VERSION < v"1.8"
+    """
+        allequal(itr)
+
+    Check whether all elements in an iterator are equal (wrt. `isequal`).
+
+    ### Input
+
+    - `itr` -- iterator
+
+    ### Output
+
+    `true` iff all elements in `itr` are equal.
+
+    ### Notes
+
+    The code is taken from [here](https://stackoverflow.com/a/47578613).
+
+    This function is available in Julia `Base` since v1.8. Accordingly, it is
+    only defined here if a Julia version below v1.8 is used.
+    """
+    # COV_EXCL_START
+    function allequal(itr)
+        length(itr) < 2 && return true
+        x1 = @inbounds itr[1]
+        @inbounds for xi in itr
+            isequal(xi, x1) || return false
+        end
+        return true
+    end
+    # COV_EXCL_STOP
+end

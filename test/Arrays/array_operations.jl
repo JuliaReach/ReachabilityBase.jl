@@ -28,6 +28,37 @@ for N in [Float64, Float32, Rational{Int}]
     @test argmaxabs(N[0, 0]) == 1
     @test argmaxabs(reshape(N[-4, -2, 4, 2], 1, 2, 2)) == 1
     @test argmaxabs(N[-4, 5, 4]) == 2
+
+    # nonzero_indices
+    @test isidentical(nonzero_indices(zeros(N, 2, 2, 2)), Int[])
+    v = N[1 0 -2 0 3]
+    for v2 in (v, sparsevec(v))
+        @test isidentical(nonzero_indices(v2), [1, 3, 5])
+    end
+
+    # find_unique_nonzero_entry
+    @test find_unique_nonzero_entry(zeros(N, 2, 2, 2)) == 0
+    @test find_unique_nonzero_entry(ones(N, 2, 2, 2)) == 0
+    @test find_unique_nonzero_entry(N[0, 1, 0]) == 2
+
+    # substitute/substitute!
+    substitution = Dict{Int,N}(1 => N(1), 3 => (3))
+    @test_throws BoundsError substitute(substitution, N[0, 0])
+    for (A, B) in ((reshape(N[0, 0, 0], 3, 1, 1), reshape(N[1, 0, 3], 3, 1, 1)),
+                   (sparsevec(N[0, 0, 0]), sparsevec(N[1, 0, 3])))
+        @test isidentical(substitute(substitution, A), B)
+        A2 = copy(A)
+        substitute!(substitution, A2)
+        @test isidentical(A2, B)
+    end
+
+    @static if VERSION < v"1.8"
+        # allequal
+        @test allequal(N[])
+        @test allequal(reshape(N[0], 1, 1, 1))
+        @test allequal(N[0, 0])
+        @test !allequal(N[0, 1])
+    end
 end
 
 for N in [Float32, Float64]
