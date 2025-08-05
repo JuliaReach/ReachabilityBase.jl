@@ -143,36 +143,6 @@ function _ismultiple(u::AbstractVector, v::AbstractVector; allow_negative::Bool)
 end
 
 """
-    nonzero_indices(v::AbstractVector{N}) where {N<:Real}
-
-Return the indices in which a vector is non-zero.
-
-### Input
-
-- `v` -- vector
-
-### Output
-
-A vector of ascending indices `i` such that the vector is non-zero in dimension
-`i`.
-"""
-function nonzero_indices(v::AbstractVector{N}) where {N<:Real}
-    n = length(v)
-    res = Vector{Int}()
-    sizehint!(res, n)
-    for i in 1:n
-        if v[i] != zero(N)
-            push!(res, i)
-        end
-    end
-    return res
-end
-
-function nonzero_indices(v::SparseVector{N}) where {N<:Real}
-    return v.nzind
-end
-
-"""
     is_cyclic_permutation(candidate::AbstractVector, paragon::AbstractVector)
 
 Checks if the elements in `candidate` are a cyclic permutation of the elements
@@ -354,55 +324,6 @@ function distance(x::AbstractVector{N}, y::AbstractVector{N}; p::Real=N(2)) wher
     return norm(x - y, p)
 end
 
-@static if VERSION < v"1.8"
-    """
-        allequal(x)
-
-    Check whether all elements in a sequence are equal
-
-    ### Input
-
-    - `x` -- sequence
-
-    ### Output
-
-    `true` iff all elements in `x` are equal.
-
-    ### Notes
-
-    The code is taken from [here](https://stackoverflow.com/a/47578613).
-
-    This function is available in Julia `Base` since v1.8. Hence it is only defined
-    here if a Julia version below v1.8 is used.
-    """
-    function allequal(x)
-        length(x) < 2 && return true
-        x1 = @inbounds x[1]
-        @inbounds for xi in x
-            xi == x1 || return false
-        end
-        return true
-    end
-end
-
-# if `vector` has exactly one non-zero entry, return its index
-# otherwise return 0
-function find_unique_nonzero_entry(vector::AbstractVector{N}) where {N}
-    res = 0
-    for (i, v) in enumerate(vector)
-        if v != zero(N)
-            if res != 0
-                # at least two non-zero entries
-                return 0
-            else
-                # first non-zero entry so far
-                res = i
-            end
-        end
-    end
-    return res
-end
-
 function append_zeros(v::AbstractVector{N}, n::Int) where {N}
     return vcat(v, zeros(N, n))
 end
@@ -494,56 +415,6 @@ function ispermutation(u::AbstractVector{T}, v::AbstractVector) where {T}
         end
     end
     return true
-end
-
-"""
-    substitute(substitution::Dict{Int, T}, x::AbstractVector{T}) where {T}
-
-Apply a substitution to a given vector.
-
-### Input
-
-- `substitution` -- substitution (a mapping from an index to a new value)
-- `x`            -- vector
-
-### Output
-
-A fresh vector corresponding to `x` after `substitution` was applied.
-"""
-function substitute(substitution::Dict{Int,T}, x::AbstractVector{T}) where {T}
-    return substitute!(substitution, copy(x))
-end
-
-"""
-    substitute!(substitution::Dict{Int, T}, x::AbstractVector{T}) where {T}
-
-Apply a substitution to a given vector.
-
-### Input
-
-- `substitution` -- substitution (a mapping from an index to a new value)
-- `x`            -- vector (modified in this function)
-
-### Output
-
-The same (but see the Notes below) vector `x` but after `substitution` was
-applied.
-
-### Notes
-
-The vector `x` is modified in-place if it has type `Vector` or `SparseVector`.
-Otherwise, we first create a new `Vector` from it.
-"""
-function substitute!(substitution::Dict{Int,T}, x::AbstractVector{T}) where {T}
-    return substitute!(Vector(x), substitution)
-end
-
-function substitute!(substitution::Dict{Int,T},
-                     x::Union{Vector{T},SparseVector{T}}) where {T}
-    for (index, value) in substitution
-        x[index] = value
-    end
-    return x
 end
 
 function isupwards(vec)
