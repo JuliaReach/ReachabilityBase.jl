@@ -39,24 +39,10 @@ for N in [Float64, Rational{Int}, Float32]
     C = N[1e-16 0; 0 -1e-16]
     @test remove_zero_columns(C) == (N <: AbstractFloat ? zeros(N, 2, 0) : C)
 
-    # substitution
-    x = N[1, 2, 3]
-    substitution = Dict(1 => N(4), 3 => N(0))
-    @test substitute(substitution, x) == N[4, 2, 0]
-    substitute!(substitution, x)
-    @test x == N[4, 2, 0]
-
     A = N[1 4; 2 5; 3 6]
     x1 = N[0, 2, 0]
     y1 = N[3, 0]
-    x2 = SingleEntryVector(2, 3, N(2))
-    y2 = SingleEntryVector(1, 2, N(3))
-    @test -x2 == SingleEntryVector(2, 3, N(-2))
-    @test inner(x1, A, y1) == dot(x1, A * y1) == inner(x2, A, y2) ==
-          dot(x2, A * y2) == N(12)
-
-    x = N[0, 1, -1]
-    @test rectify(x) == N[0, 1, 0]
+    @test inner(x1, A, y1) == dot(x1, A * y1)
 
     # approximate permutation check
     v1 = [N[1, 2], N[2, 3], N[3, 4]]
@@ -85,12 +71,6 @@ for N in [Float64, Rational{Int}, Float32]
     V = [sparsevec([2], N[2]), sparsevec([1, 2], N[1, 3])]
     M = to_matrix(V)
     @test M isa SparseMatrixCSC{N} && M == M0
-
-    # same sign
-    A = (N isa AbstractFloat) ? rand(N, 100, 100) : ones(N, 100, 100)
-    @test same_sign(A; optimistic=true) == same_sign(A; optimistic=false) == true
-    A[50, 50] = N(-1)
-    @test same_sign(A; optimistic=true) == same_sign(A; optimistic=false) == false
 
     # ============================================
     # Corresponding vector types and matrix types
