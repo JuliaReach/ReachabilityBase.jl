@@ -1,7 +1,7 @@
 """
     Arrays
 
-This module provides machinery for vectors and matrices.
+This module provides machinery for vectors, matrices, and general arrays.
 """
 module Arrays
 
@@ -68,12 +68,13 @@ export abs_sum,
     export allequal
 end
 
-include("SingleEntryVector.jl")
 include("array_operations.jl")
 include("matrix_operations.jl")
 include("vector_operations.jl")
 include("matrix_vector_operations.jl")
 include("logarithmic_norm.jl")
+include("SingleEntryVector.jl")
+
 include("init.jl")
 
 end  # module
