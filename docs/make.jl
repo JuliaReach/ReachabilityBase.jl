@@ -1,4 +1,6 @@
-using Documenter, ReachabilityBase
+using Documenter, ReachabilityBase, DocumenterCitations
+
+bib = CitationBibliography(joinpath(@__DIR__, "src", "refs.bib"); style=:alpha)
 
 DocMeta.setdocmeta!(ReachabilityBase, :DocTestSetup,
                     :(using ReachabilityBase); recursive=true)
@@ -12,6 +14,7 @@ makedocs(; sitename="ReachabilityBase.jl",
                   ReachabilityBase.Distribution, ReachabilityBase.Subtypes,
                   ReachabilityBase.Arrays, ReachabilityBase.Timing],
          pagesonly=true,
+         plugins=[bib],
          pages=["Home" => "index.md",
                 "Library" => Any[
                                  #
@@ -28,6 +31,7 @@ makedocs(; sitename="ReachabilityBase.jl",
                                  "Basetype" => "lib/Basetype.md"
                                  #
                                  ],
+                "Bibliography" => "bibliography.md",
                 "About" => "about.md"])
 
 deploydocs(; repo="github.com/JuliaReach/ReachabilityBase.jl.git",
