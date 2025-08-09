@@ -11,9 +11,6 @@ seed!(1234)  # fix RNG seed for reproducibility
     @testset "arrays" begin
         include("Arrays/arrays.jl")
     end
-    @testset "logarithmic_norm" begin
-        include("Arrays/logarithmic_norm.jl")
-    end
     @testset "matrix_operations" begin
         include("Arrays/matrix_operations.jl")
     end
@@ -25,6 +22,9 @@ seed!(1234)  # fix RNG seed for reproducibility
     end
     @testset "SingleEntryVector" begin
         include("Arrays/SingleEntryVector.jl")
+    end
+    @testset "logarithmic_norm" begin
+        include("Arrays/logarithmic_norm.jl")
     end
 end
 @testset "Comparison" begin
