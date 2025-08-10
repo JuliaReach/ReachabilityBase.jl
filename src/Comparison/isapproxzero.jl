@@ -1,11 +1,12 @@
 """
     isapproxzero(x::N; ztol::Real=_ztol(N)) where {N<:Real}
+    isapproxzero(x::AbstractArray{N}; ztol::Real=_ztol(N)) where {N<:Real}
 
-Determine if `x` is approximately zero.
+Determine whether `x` is approximately zero.
 
 ### Input
 
-- `x`    -- number
+- `x`    -- number or array
 - `ztol` -- (optional, default: `_ztol(N)`) tolerance against zero
 
 ### Output
@@ -19,4 +20,13 @@ the tolerance for zero, `ztol`.
 """
 function isapproxzero(x::N; ztol::Real=_ztol(N)) where {N<:Real}
     return abs(x) <= ztol
+end
+
+function isapproxzero(x::AbstractArray{N}; ztol::Real=_ztol(N)) where {N<:Real}
+    for v in x
+        if !isapproxzero(v; ztol=ztol)
+            return false
+        end
+    end
+    return true
 end
