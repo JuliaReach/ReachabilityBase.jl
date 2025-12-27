@@ -54,7 +54,7 @@ function logarithmic_norm_inf(A::AbstractMatrix{N}) where {N}
     return out
 end
 
-# max_j  1/2 * λⱼ(A + A^T)
+# max_j  1/2 * λⱼ(A + Aᵀ)
 function logarithmic_norm_2(A::AbstractMatrix)
     B = A + A'
     λ = eigvals(B)
