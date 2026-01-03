@@ -29,6 +29,7 @@ ismultiple
 ispermutation
 issquare
 iswellconditioned
+logarithmic_norm
 matrix_type
 nonzero_columns
 nonzero_indices
