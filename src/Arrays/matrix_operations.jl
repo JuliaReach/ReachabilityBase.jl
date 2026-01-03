@@ -279,18 +279,6 @@ function projection_matrix(block::AbstractVector{Int}, n::Int,
     return projection_matrix(block, n, N)
 end
 
-function load_projection_matrix_static()
-    return quote
-        # represent the projection matrix with a static array
-        function projection_matrix(block::AbstractVector{Int}, n::Int,
-                                   VN::Type{<:SVector{L,N}}) where {L,N}
-            mat = projection_matrix(block, n, N)
-            m = size(mat, 1)
-            return SMatrix{m,n}(mat)
-        end
-    end # quote
-end # end load_projection_matrix_static
-
 """
     remove_zero_columns(A::AbstractMatrix)
 
