@@ -6,7 +6,7 @@ some user-controlled precision.
 """
 module Comparison
 
-using SparseArrays
+using SparseArrays: SparseVector
 
 export set_rtol, set_ztol, set_atol, set_tolerance,
        _rtol, _ztol, _atol, default_tolerance,

@@ -73,7 +73,7 @@ function inner(e1::SingleEntryVector{N}, A::AbstractMatrix{N},
 end
 
 # norm
-function LinearAlgebra.norm(e::SingleEntryVector, ::Real=2)
+function norm(e::SingleEntryVector, ::Real=2)
     return abs(e.v)
 end
 

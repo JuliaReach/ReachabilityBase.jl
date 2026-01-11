@@ -5,10 +5,14 @@ This module provides machinery for vectors and matrices.
 """
 module Arrays
 
-using LinearAlgebra, Requires, SparseArrays
-import LinearAlgebra: rank
-
+using Base: /
+using LinearAlgebra: Diagonal, \, cond, det, diag, dot, eigvals, norm, qr,
+                     transpose
 using Random: AbstractRNG, GLOBAL_RNG
+using Requires: @require
+using SparseArrays: AbstractSparseArray, AbstractSparseMatrix,
+                    AbstractSparseVector, SparseMatrixCSC, SparseVector,
+                    dropzeros!, sparse, sparsevec, spzeros
 
 using ReachabilityBase.Assertions: @assert, activate_assertions
 activate_assertions(Arrays)  # activate assertions by default
@@ -16,6 +20,7 @@ activate_assertions(Arrays)  # activate assertions by default
 using ReachabilityBase.Comparison: _geq, isapproxzero, _isapprox, _in
 
 import Base: rationalize
+import LinearAlgebra: norm, rank
 
 export abs_sum,
        append_zeros,

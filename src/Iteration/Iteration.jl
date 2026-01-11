@@ -5,8 +5,6 @@ This module provides convenience functionality for iteration.
 """
 module Iteration
 
-using SparseArrays
-
 export EmptyIterator, SingletonIterator,
        StrictlyIncreasingIndices, NondecreasingIndices, BitvectorIterator,
        CartesianIterator
