@@ -64,7 +64,11 @@ of the `i`-th component of `x`.
 See also `Base.rationalize`.
 """
 function rationalize(::Type{T}, x::AbstractArray{N}, tol::Real) where {T<:Integer,N<:AbstractFloat}
-    return rationalize.(Ref(T), x, Ref(tol))
+    y = Vector{Rational{T}}(undef, length(x))
+    @inbounds for (i, xi) in enumerate(x)
+        y[i] = rationalize(T, xi, tol)
+    end
+    return y
 end
 
 # method extensions
@@ -77,9 +81,13 @@ function rationalize(x::AbstractArray{N}; kwargs...) where {N<:AbstractFloat}
 end
 
 # nested vectors
-function rationalize(::Type{T}, x::AbstractArray{<:AbstractArray{N}},
+function rationalize(::Type{T}, xs::AbstractArray{<:AbstractArray{N}},
                      tol::Real) where {T<:Integer,N<:AbstractFloat}
-    return rationalize.(Ref(T), x, Ref(tol))
+    ys = Vector{Vector{Rational{T}}}(undef, length(xs))
+    @inbounds for (i, xi) in enumerate(xs)
+        ys[i] = rationalize(T, xi, tol)
+    end
+    return ys
 end
 
 """
