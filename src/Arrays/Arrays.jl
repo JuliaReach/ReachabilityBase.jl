@@ -6,8 +6,7 @@ This module provides machinery for vectors and matrices.
 module Arrays
 
 using Base: /
-using LinearAlgebra: Diagonal, \, cond, det, diag, dot, eigvals, norm, qr,
-                     transpose
+using LinearAlgebra: Diagonal, \, cond, det, diag, eigvals, norm, qr, transpose
 using Random: AbstractRNG, GLOBAL_RNG
 using Requires: @require
 using SparseArrays: AbstractSparseArray, AbstractSparseMatrix,
@@ -19,8 +18,10 @@ activate_assertions(Arrays)  # activate assertions by default
 
 using ReachabilityBase.Comparison: _geq, isapproxzero, _isapprox, _in
 
+using ReachabilityBase.Commutative: @commutative
+
 import Base: rationalize
-import LinearAlgebra: norm, rank
+import LinearAlgebra: dot, norm, rank
 
 export abs_sum,
        append_zeros,
