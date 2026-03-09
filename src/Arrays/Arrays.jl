@@ -19,7 +19,7 @@ activate_assertions(Arrays)  # activate assertions by default
 
 using ReachabilityBase.Comparison: _geq, isapproxzero, _isapprox, _in
 
-import Base: rationalize
+import Base: copy, rationalize
 import LinearAlgebra: norm, rank
 
 export abs_sum,
