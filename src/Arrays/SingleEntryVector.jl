@@ -126,6 +126,10 @@ end
     return a.v * @view(B[a.i, :])
 end
 
+function copy(e::SingleEntryVector)
+    return SingleEntryVector(e.i, e.n, e.v)
+end
+
 # vector-vector multiplication
 @inline function At_mul_B(a::SingleEntryVector, b::SingleEntryVector)
     if length(a) != length(b)
