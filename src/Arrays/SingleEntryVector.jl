@@ -155,7 +155,7 @@ function dot(e1::SingleEntryVector, e2::SingleEntryVector)
         throw(DimensionMismatch("dimensions must match, but they are " *
                                 "$(length(e1)) and $(length(e2)) respectively"))
     end
-        if e1.i == e2.i
+    if e1.i == e2.i
         return e1.v * e2.v
     else
         N = promote_type(eltype(e1), eltype(e2))
