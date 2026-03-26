@@ -140,3 +140,25 @@ end
         return [zero(N)]
     end
 end
+
+# using `AbstractVector` causes many ambiguities, so for now we only target `Vector`
+@commutative function dot(e::SingleEntryVector, x::Vector)
+    if length(e) != length(x)
+        throw(DimensionMismatch("dimensions must match, but they are " *
+                                "$(length(e)) and $(length(x)) respectively"))
+    end
+    return (@inbounds x[e.i]) * e.v
+end
+
+function dot(e1::SingleEntryVector, e2::SingleEntryVector)
+    if length(e1) != length(e2)
+        throw(DimensionMismatch("dimensions must match, but they are " *
+                                "$(length(e1)) and $(length(e2)) respectively"))
+    end
+        if e1.i == e2.i
+        return e1.v * e2.v
+    else
+        N = promote_type(eltype(e1), eltype(e2))
+        return zero(N)
+    end
+end
