@@ -102,12 +102,10 @@ A matrix type that corresponds in some sense (see Notes below) to `T`.
 function matrix_type end
 
 vector_type(::Type{<:AbstractSparseArray{T}}) where {T} = SparseVector{T,Int}
-vector_type(VT::Type{<:AbstractVector{T}}) where {T} = VT
-vector_type(::Type{<:AbstractMatrix{T}}) where {T} = Vector{T}
+vector_type(::Type{<:AbstractArray{T}}) where {T} = Vector{T}
 
-matrix_type(::Type{<:AbstractVector{T}}) where {T} = Matrix{T}
-matrix_type(MT::Type{<:AbstractMatrix{T}}) where {T} = MT
-matrix_type(::Type{<:AbstractSparseVector{T}}) where {T} = SparseMatrixCSC{T,Int}
+matrix_type(::Type{<:AbstractSparseArray{T}}) where {T} = SparseMatrixCSC{T,Int}
+matrix_type(::Type{<:AbstractArray{T}}) where {T} = Matrix{T}
 
 # matrix constructors
 _matrix(m, n, ::Type{<:AbstractMatrix{T}}) where {T} = Matrix{T}(undef, m, n)
