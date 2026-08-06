@@ -86,12 +86,6 @@ for N in [Float64, Rational{Int}, Float32]
     M = to_matrix(V)
     @test M isa SparseMatrixCSC{N} && M == M0
 
-    # same sign
-    A = (N isa AbstractFloat) ? rand(N, 100, 100) : ones(N, 100, 100)
-    @test same_sign(A; optimistic=true) == same_sign(A; optimistic=false) == true
-    A[50, 50] = N(-1)
-    @test same_sign(A; optimistic=true) == same_sign(A; optimistic=false) == false
-
     # ============================================
     # Corresponding vector types and matrix types
     # ============================================

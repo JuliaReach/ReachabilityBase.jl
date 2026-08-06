@@ -1,5 +1,5 @@
 """
-    same_sign(A::AbstractArray{N}; [optimistic]::Bool=false) where {N}
+    same_sign(A::AbstractArray)
 
 Check whether all elements of the given array have the same sign.
 
@@ -11,34 +11,36 @@ Check whether all elements of the given array have the same sign.
 
 ### Output
 
-`true` if and only if all elements in `M` have the same sign.
+`true` if and only if all elements in `A` have the same sign.
 
-### Algorithm
+### Notes
 
-If `optimistic` is `false`, we check the sign of the first element and compare
-to the sign of all elements.
-
-If `optimistic` is `true`, we compare the absolute element sum with the sum of
-the absolute of the elements; this is faster if the result is `true` because
-there is no branching.
-
-```math
-    |\\sum_i A_i| = \\sum_i |A_i|
-```
+The result is `false` if and only if the array contains two elements ``e₁ > 0``
+and ``e₂ < 0``. Zero elements (0) do not influence the result.
 """
-function same_sign(A::AbstractArray{N}; optimistic::Bool=false) where {N}
-    if optimistic
-        return sum(abs, A) == abs(sum(A))
-    else
-        if isempty(A)
+function same_sign(A::AbstractArray)
+    if isempty(A)
+        return true
+    end
+    N = eltype(A)
+    for (i, Ai) in enumerate(A)
+        if Ai > zero(N)
+            @inbounds for j in (i+1):length(A)
+                if A[j] < zero(N)
+                    return false
+                end
+            end
+            return true
+        elseif Ai < zero(N)
+            @inbounds for j in (i+1):length(A)
+                if A[j] > zero(N)
+                    return false
+                end
+            end
             return true
         end
-        @inbounds if first(A) >= zero(N)
-            return all(e -> e >= zero(N), A)
-        else
-            return all(e -> e <= zero(N), A)
-        end
     end
+    return true
 end
 
 """
