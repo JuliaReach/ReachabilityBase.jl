@@ -5,8 +5,8 @@ This module provides machinery for vectors and matrices.
 """
 module Arrays
 
-using Base: /
-using LinearAlgebra: Diagonal, \, cond, det, diag, eigvals, norm, qr, transpose
+using Base: \, /, transpose
+using LinearAlgebra: Diagonal, cond, det, diag, eigvals, norm, qr
 using Random: AbstractRNG, GLOBAL_RNG
 using Requires: @require
 using SparseArrays: AbstractSparseArray, AbstractSparseMatrix,
