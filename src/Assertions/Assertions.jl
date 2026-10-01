@@ -16,7 +16,7 @@ export activate_assertions,
 
 # override Base.@assert
 macro assert(exs...)
-    quote
+    return quote
         if $__module__.are_assertions_enabled()
             Base.@assert $(map(esc, exs)...)
         end

@@ -14,7 +14,7 @@ makedocs(; sitename="ReachabilityBase.jl",
          pagesonly=true,
          pages=["Home" => "index.md",
                 "Library" => Any[
-                                 #
+                    #
                                  "Assertions" => "lib/Assertions.md",
                                  "Require" => "lib/Require.md",
                                  "Comparison" => "lib/Comparison.md",
@@ -26,8 +26,8 @@ makedocs(; sitename="ReachabilityBase.jl",
                                  "Timing" => "lib/Timing.md",
                                  "CurrentPath" => "lib/CurrentPath.md",
                                  "Basetype" => "lib/Basetype.md"
-                                 #
-                                 ],
+                    #
+                    ],
                 "About" => "about.md"])
 
 deploydocs(; repo="github.com/JuliaReach/ReachabilityBase.jl.git",
