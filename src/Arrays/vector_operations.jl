@@ -535,7 +535,7 @@ The vector `x` is modified in-place if it has type `Vector` or `SparseVector`.
 Otherwise, we first create a new `Vector` from it.
 """
 function substitute!(substitution::Dict{Int,T}, x::AbstractVector{T}) where {T}
-    return substitute!(Vector(x), substitution)
+    return substitute!(substitution, Vector(x))
 end
 
 function substitute!(substitution::Dict{Int,T},
