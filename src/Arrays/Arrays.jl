@@ -1,7 +1,7 @@
 """
     Arrays
 
-This module provides machinery for vectors and matrices.
+This module provides machinery for vectors, matrices, and general arrays.
 """
 module Arrays
 
@@ -12,16 +12,14 @@ using Requires: @require
 using SparseArrays: AbstractSparseArray, AbstractSparseMatrix,
                     AbstractSparseVector, SparseMatrixCSC, SparseVector,
                     dropzeros!, sparse, sparsevec, spzeros
+using ReachabilityBase.Comparison: _geq, _in, isapproxzero, _isapprox
+using ReachabilityBase.Commutative: @commutative
+
+import Base: +, -, *, getindex, rationalize, size
+import LinearAlgebra: dot, norm, rank
 
 using ReachabilityBase.Assertions: @assert, activate_assertions
 activate_assertions(Arrays)  # activate assertions by default
-
-using ReachabilityBase.Comparison: _geq, isapproxzero, _isapprox, _in
-
-using ReachabilityBase.Commutative: @commutative
-
-import Base: rationalize
-import LinearAlgebra: dot, norm, rank
 
 export abs_sum,
        append_zeros,
@@ -74,12 +72,13 @@ export abs_sum,
     export allequal
 end
 
-include("SingleEntryVector.jl")
 include("array_operations.jl")
 include("matrix_operations.jl")
 include("vector_operations.jl")
 include("matrix_vector_operations.jl")
 include("logarithmic_norm.jl")
+include("SingleEntryVector.jl")
+
 include("init.jl")
 
 end  # module
