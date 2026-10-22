@@ -1,4 +1,4 @@
-using ReachabilityBase.Comparison
+using ReachabilityBase.Comparison, Test
 
 # approximate <=
 @test _leq(2e-15, 1e-15) && _leq(1e-15, 2e-15)
@@ -22,6 +22,8 @@ _ztol(eltype(0.01)) == sqrt(eps(Float64))
 # approximately zero tests
 @test isapproxzero(0 // 1)
 @test isapproxzero(1e-8) && !isapproxzero(1e-8; ztol=1e-10)
+@test isapproxzero([0 // 1, 0//1])
+@test !isapproxzero([0 // 1, 1//1])
 
 # approximate equality
 @test !_isapprox(1 // 1, 1 // 1 + 1 // 1000000000000)
