@@ -20,7 +20,7 @@ using ReachabilityBase.Comparison: _geq, isapproxzero, _isapprox, _in
 
 using ReachabilityBase.Commutative: @commutative
 
-import Base: rationalize
+import Base: copy, rationalize
 import LinearAlgebra: dot, norm, rank
 
 export abs_sum,
