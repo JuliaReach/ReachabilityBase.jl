@@ -16,6 +16,14 @@ for N in [Float64, Float32, Rational{Int}]
     @test argmaxabs(N[-4, -2, 3]) == 1
     @test argmaxabs(N[-4, 5, 3]) == 2
     @test argmaxabs(N[1, -2, 3]) == 3
+
+    # same_sign
+    for a in ([], [0, 0], [0, 1], [0, -1], [1, 0, 2, 0, 3], [0, -1, 0, -2, 0])
+        @test same_sign(a)
+    end
+    for a in ([1, 0, -2, 0, 3], [0, 1, 0, -2, 0, 3])
+        @test !same_sign(a)
+    end
 end
 
 for N in [Float32, Float64]
