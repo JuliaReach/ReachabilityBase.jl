@@ -25,14 +25,14 @@ function same_sign(A::AbstractArray)
     N = eltype(A)
     for (i, Ai) in enumerate(A)
         if Ai > zero(N)
-            @inbounds for j in (i+1):length(A)
+            @inbounds for j in (i + 1):length(A)
                 if A[j] < zero(N)
                     return false
                 end
             end
             return true
         elseif Ai < zero(N)
-            @inbounds for j in (i+1):length(A)
+            @inbounds for j in (i + 1):length(A)
                 if A[j] > zero(N)
                     return false
                 end
