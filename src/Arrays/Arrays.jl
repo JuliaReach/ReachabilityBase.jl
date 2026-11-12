@@ -8,7 +8,6 @@ module Arrays
 using Base: \, /, transpose
 using LinearAlgebra: Diagonal, Hermitian, cond, det, diag, eigmax, norm, qr
 using Random: AbstractRNG, GLOBAL_RNG
-using Requires: @require
 using SparseArrays: AbstractSparseArray, AbstractSparseMatrix,
                     AbstractSparseVector, SparseMatrixCSC, SparseVector,
                     dropzeros!, sparse, sparsevec, spzeros

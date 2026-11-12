@@ -141,9 +141,3 @@ end
 
 # no-op
 similar_type(x::AbstractVector) = typeof(x)
-
-function load_copy_finalize_static()
-    return quote
-        similar_type(x::StaticArrays.StaticArray) = StaticArrays.similar_type(x)
-    end # quote
-end # end load_copy_finalize_static
