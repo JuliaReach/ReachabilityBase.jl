@@ -15,6 +15,12 @@ CurrentModule = ReachabilityBase.Comparison
 Comparison
 ```
 
+## Exact comparison
+
+```@docs
+isidentical
+```
+
 ## Tolerance
 
 ```@docs
