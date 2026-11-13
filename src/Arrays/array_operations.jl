@@ -76,20 +76,20 @@ function rationalize(A::AbstractArray{N}; kwargs...) where {N<:AbstractFloat}
     return rationalize(Int, A; kwargs...)
 end
 
-# nested vectors
-function rationalize(::Type{T}, As::AbstractVector{<:AbstractVector{N}},
+# nested arrays (not type stable)
+function rationalize(::Type{T}, A::AbstractArray{<:AbstractArray{N}},
                      tol::Real) where {T<:Integer,N<:AbstractFloat}
-    Bs = similar(As, Rational{T})
+    return rationalize.(Ref(T), A, Ref(tol))
+end
+
+# nested arrays of `Vector`s (type stable)
+function rationalize(::Type{T}, As::AbstractArray{Vector{N}},
+                     tol::Real) where {T<:Integer,N<:AbstractFloat}
+    Bs = similar(As, Vector{Rational{T}})
     @inbounds for (i, Ai) in enumerate(As)
         Bs[i] = rationalize(T, Ai, tol)
     end
     return Bs
-end
-
-# nested arrays
-function rationalize(::Type{T}, A::AbstractArray{<:AbstractArray{N}},
-                     tol::Real) where {T<:Integer,N<:AbstractFloat}
-    return rationalize.(Ref(T), A, Ref(tol))
 end
 
 # `tol` as kwarg with default value

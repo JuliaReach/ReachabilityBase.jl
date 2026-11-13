@@ -71,20 +71,29 @@ for N in [Float32, Float64]
     to_3d(v) = reshape(v, 1, 2, 2)
 
     # rationalize
-    A = to_3d(N[1, 2, 3, 4])
+    x = N[1, 2, 3, 4]
+    A = to_3d(x)
     # default: Rational{Int}
+    x2 = rationalize(x)
     A2 = rationalize(A)
-    A3 = to_3d(Rational{Int}[1, 2, 3, 4])
-    @test isidentical(A2, A3)
+    x3 = Rational{Int}[1, 2, 3, 4]
+    A3 = to_3d(x3)
+    @test isidentical(x2, x3) && isidentical(A2, A3)
     # tolerance
     A2 = rationalize(A; tol=2 * eps(N))
     @test isidentical(A2, A3)
     # nested arrays
-    A2 = rationalize(Int, [A, A], 2 * eps(N))
-    isidentical(A2, [A3, A3])
+    x2 = rationalize(Int, [x, x])
+    @test isidentical(x2, [x3, x3])
+    A2 = rationalize(Int, [A, A])
+    @test isidentical(A2, [A3, A3])
     # Rational{BigInt}
+    x2 = rationalize(BigInt, [x, x])
+    x3 = Rational{BigInt}[1, 2, 3, 4]
+    @test isidentical(x2, [x3, x3])
     A2 = rationalize(BigInt, A)
-    A3 = to_3d(Rational{BigInt}[1, 2, 3, 4])
+    x2 = Rational{BigInt}[1, 2, 3, 4]
+    A3 = to_3d(x2)
     @test isidentical(A2, A3)
     # tolerance
     A2 = rationalize(BigInt, A; tol=2 * eps(N))
