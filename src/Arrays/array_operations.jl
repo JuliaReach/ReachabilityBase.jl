@@ -71,12 +71,6 @@ function rationalize(::Type{T}, A::AbstractArray{N}, tol::Real) where {T<:Intege
     return B
 end
 
-# `tol` as kwarg with default value
-function rationalize(::Type{T}, A::AbstractArray{N};
-                     tol::Real=eps(N)) where {T<:Integer,N<:AbstractFloat}
-    return rationalize(T, A, tol)
-end
-
 # no `T` with default value
 function rationalize(A::AbstractArray{N}; kwargs...) where {N<:AbstractFloat}
     return rationalize(Int, A; kwargs...)
@@ -96,6 +90,16 @@ end
 function rationalize(::Type{T}, A::AbstractArray{<:AbstractArray{N}},
                      tol::Real) where {T<:Integer,N<:AbstractFloat}
     return rationalize.(Ref(T), A, Ref(tol))
+end
+
+# `tol` as kwarg with default value
+function rationalize(::Type{T}, A::AbstractArray{N};
+                     tol::Real=eps(N)) where {T<:Integer,N<:AbstractFloat}
+    return rationalize(T, A, tol)
+end
+function rationalize(::Type{T}, A::AbstractArray{<:AbstractArray{N}};
+                     tol::Real=eps(N)) where {T<:Integer,N<:AbstractFloat}
+    return rationalize(T, A, tol)
 end
 
 """
